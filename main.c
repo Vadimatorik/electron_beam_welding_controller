@@ -16,9 +16,9 @@ int main(void) {
   HAL_DAC_SetValue(&g.dac,DAC_CHANNEL_1,DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_SetValue(&g.dac,DAC_CHANNEL_2,DAC_ALIGN_12B_R, 2048 );
 
-  HAL_ADC_Start_IT( &g.adc );
+  //HAL_ADC_Start_IT( &g.adc );
 
-  uint32_t z;
+ //uint32_t z;
 
   /*
   for ( volatile int l = 0; l < 20; l++ ) {
@@ -28,7 +28,7 @@ int main(void) {
 
   //ps = (float)3.3 / (float)4096 * (z / 20);
 
- // HAL_TIM_Base_Start_IT(&g.tim);
+  HAL_TIM_Base_Start_IT(&g.tim);
   while (1)  {  }
 }
 
@@ -36,7 +36,7 @@ int main(void) {
 uint8_t loop = 0;
 uint32_t real_data = 0;
 float Xc = 1.6;
-uint16_t amplitude = 64;
+uint16_t amplitude = 372;
 float test[ 300 ];
 uint32_t loop_test = 0;
 
@@ -72,7 +72,7 @@ void TIM2_IRQHandler(void) {
 		s_2++;
 	}
 
-
+/*
 	// Экстремум сканирования - 6 (1-й).
 	// Экстремум приходящего сигнала - 10.
 	// Анализ.
@@ -107,7 +107,7 @@ void TIM2_IRQHandler(void) {
 					val_counter[ l ] = 1;
 					usr_array[ l ] = 0;
 				}
-	}
+	}*/
 
 }
 

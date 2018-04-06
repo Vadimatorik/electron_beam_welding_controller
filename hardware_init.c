@@ -215,5 +215,7 @@ void hardwareInit ( void ) {
 	dacInit();
 	timInit();
 	uartInit();
+
+	nvicInit();
 }
 
