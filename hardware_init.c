@@ -1,5 +1,5 @@
+#include <drivers/hal/inc/stm32f2xx_hal.h>
 #include "hardware_init.h"
-#include "stm32f2xx_hal.h"
 #include "global_struct.h"
 
 extern globalApplicationStruct		g;
