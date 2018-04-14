@@ -90,7 +90,7 @@ void timInit ( void ) {
 	g.tim.Instance							=	TIM2;
 	g.tim.Init.Prescaler					=	0;
 	g.tim.Init.CounterMode					=	TIM_COUNTERMODE_UP;
-	g.tim.Init.Period						=	11110;
+	g.tim.Init.Period						=	10000;
 	g.tim.Init.ClockDivision				=	TIM_CLOCKDIVISION_DIV1;
 	g.tim.Init.AutoReloadPreload			=	TIM_AUTORELOAD_PRELOAD_ENABLE;
 

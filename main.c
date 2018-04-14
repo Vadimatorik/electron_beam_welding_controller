@@ -16,7 +16,7 @@ int main(void) {
   HAL_DAC_SetValue(&g.dac,DAC_CHANNEL_1,DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_SetValue(&g.dac,DAC_CHANNEL_2,DAC_ALIGN_12B_R, 2048 );
 
-  //HAL_ADC_Start_IT( &g.adc );
+  HAL_ADC_Start_IT( &g.adc );
 
  //uint32_t z;
 
@@ -35,8 +35,8 @@ int main(void) {
 #include <math.h>
 uint8_t loop = 0;
 uint32_t real_data = 0;
-float Xc = 1.6;
-uint16_t amplitude = 372;
+float Xc = 1.65;
+uint16_t amplitude = ( uint16_t )( (double)4096 / (double)3.3 * (double)0.3 );
 float test[ 300 ];
 uint32_t loop_test = 0;
 
@@ -50,8 +50,33 @@ uint32_t s_2 = 0;
 
 
 uint8_t flag_new_point = 0;
+
+uint32_t get_pointing ( void ) {
+	uint32_t min = 4096;
+	uint32_t max = 0;
+	uint32_t max_index = 0;
+	uint32_t min_index = 0;
+	for ( uint32_t i = 0; i < 20; i++ ) {
+		if ( usr_array[ i ] < min ) {
+			min = usr_array[ i ];
+			min_index = i;
+		}
+
+		if ( usr_array[ i ] > max ) {
+			max = usr_array[ i ];
+			max_index = i;
+		}
+	}
+	if ( min_index < max_index ) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+
 void TIM2_IRQHandler(void) {
-	uint16_t out_pos;
+	volatile uint16_t out_pos;
 	flag_new_point = 0;
 	out_pos = sin( (3.14 * 2) / 20 * loop ) * (float)(amplitude) +  (float)4096 / (float)3.3  * Xc;
 
@@ -66,19 +91,19 @@ void TIM2_IRQHandler(void) {
 		val_counter[19]++;
 	}
 
+
 	loop++;
 	if (loop == 20) {
 		loop=0;
 		s_2++;
 	}
 
-/*
 	// Экстремум сканирования - 6 (1-й).
 	// Экстремум приходящего сигнала - 10.
 	// Анализ.
-	if (s_2 == 25) {
+	if (s_2 == 20/* 25*/) {
 		s_2 = 0;
-
+/*
 		// Убираем постоянную составляющую.
 		volatile int32_t p = 0;
 		for ( uint32_t l = 0; l < 10; l++) {
@@ -90,24 +115,20 @@ void TIM2_IRQHandler(void) {
 
 		if ( p <  0 ) p *= -1;
 
-		int32_t an = usr_array[8] - p;
-		uint32_t an_p;
-		if ( an <  0 ) an_p = an * -1;
-		else an_p = an;
-
-		if ( an_p > 120 ) {		// Мы в стыке.
-			if ( an > 0 ) {
+		int32_t an = usr_array[5] - p;
+*/
+			if ( !get_pointing() ) {
 				Xc += 0.01;
 			} else {
 				Xc -= 0.01;
 			}
-		}
+
 
 		for ( uint32_t l = 0; l < 20; l++ ) {
 					val_counter[ l ] = 1;
 					usr_array[ l ] = 0;
 				}
-	}*/
+	}
 
 }
 
@@ -136,6 +157,7 @@ volatile uint32_t l_zp = 0;
 uint32_t sc = 0;
 void EXTI2_IRQHandler(void)
 {
+	/*
 	if ( l_zp < 1020 ) {
 	zp[l_zp] = Xc;
 	l_zp++;
@@ -143,7 +165,7 @@ void EXTI2_IRQHandler(void)
 		while (l_zp){
 
 		};
-	}
+	}*/
 	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
 }
 
