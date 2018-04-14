@@ -9,7 +9,7 @@ uint32_t adc_cur;
 float ps;
 
 int main(void) {
-	hardwareInit();
+
 
   HAL_DAC_Start( &g.dac, DAC_CHANNEL_1 );
   HAL_DAC_Start( &g.dac, DAC_CHANNEL_2 );
