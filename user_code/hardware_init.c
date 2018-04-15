@@ -24,55 +24,6 @@ void dacInit ( void ) {
 		errorHandler();
 }
 
-void timInit ( void ) {
-	__HAL_RCC_TIM2_CLK_ENABLE();
-
-	TIM_ClockConfigTypeDef sClockSourceConfig;
-	TIM_MasterConfigTypeDef sMasterConfig;
-	TIM_OC_InitTypeDef sConfigOC;
-
-	g.tim.Instance							=	TIM2;
-	g.tim.Init.Prescaler					=	0;
-	g.tim.Init.CounterMode					=	TIM_COUNTERMODE_UP;
-	g.tim.Init.Period						=	10000;
-	g.tim.Init.ClockDivision				=	TIM_CLOCKDIVISION_DIV1;
-	g.tim.Init.AutoReloadPreload			=	TIM_AUTORELOAD_PRELOAD_ENABLE;
-
-	if ( HAL_TIM_Base_Init( &g.tim ) != HAL_OK)
-		errorHandler();
-
-	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-
-	if ( HAL_TIM_ConfigClockSource( &g.tim, &sClockSourceConfig) != HAL_OK)
-		errorHandler();
-
-	if ( HAL_TIM_OC_Init( &g.tim ) != HAL_OK )
-		errorHandler();
-
-	sMasterConfig.MasterOutputTrigger		=	TIM_TRGO_UPDATE;
-	sMasterConfig.MasterSlaveMode			=	TIM_MASTERSLAVEMODE_ENABLE;
-
-	if ( HAL_TIMEx_MasterConfigSynchronization( &g.tim, &sMasterConfig ) != HAL_OK )
-		errorHandler();
-
-	sConfigOC.OCMode						=	TIM_OCMODE_TIMING;
-	sConfigOC.Pulse							=	0;
-	sConfigOC.OCPolarity					=	TIM_OCPOLARITY_HIGH;
-	sConfigOC.OCFastMode					=	TIM_OCFAST_DISABLE;
-
-	if ( HAL_TIM_OC_ConfigChannel( &g.tim, &sConfigOC, TIM_CHANNEL_1 ) != HAL_OK )
-		errorHandler();
-
-	if ( HAL_TIM_OC_ConfigChannel( &g.tim, &sConfigOC, TIM_CHANNEL_2 ) != HAL_OK )
-		errorHandler();
-
-	if ( HAL_TIM_OC_ConfigChannel( &g.tim, &sConfigOC, TIM_CHANNEL_3 ) != HAL_OK )
-		errorHandler();
-
-	if (HAL_TIM_OC_ConfigChannel( &g.tim, &sConfigOC, TIM_CHANNEL_4 ) != HAL_OK )
-		errorHandler();
-}
-
 void uartInit ( void ) {
 	__HAL_RCC_USART1_CLK_ENABLE();
 

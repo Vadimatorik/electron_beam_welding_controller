@@ -9,4 +9,4 @@ AdcOneChannelCfg adcCfg = {
 	.samplingTime		=	ADC_SAMPLETIME_56CYCLES
 };
 
-AdcOneChannel	adcObj( &adcCfg );
+AdcOneChannel	scanAdcObj( &adcCfg );
