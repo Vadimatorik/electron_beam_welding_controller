@@ -13,8 +13,8 @@ extern AdcOneChannel			scanAdcObj;
 extern TimInterrupt				scanTimInterruptObj;
 extern Uart						scanUartObj;
 extern DacOneChannelBase*		scanDacArray[ 2 ];
+extern PinMultifuncIt			scanEncoderPinExti;
 
-#define	ADC_HANDLER_PRIO				6
 #define TIM2_HANDLER_PRIO				6
 #define EXTI_HANDLER_PRIO				6
 

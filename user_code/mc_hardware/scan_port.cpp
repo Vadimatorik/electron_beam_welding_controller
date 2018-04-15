@@ -53,5 +53,6 @@ const pinCfg scanGpCfg[] = {
 	scanAdcPinCfg
 };
 
-GlobalPort scanGpObj( scanGpCfg, M_SIZE_ARRAY( scanGpCfg ) );
+GlobalPort		scanGpObj( scanGpCfg, M_SIZE_ARRAY( scanGpCfg ) );
+PinMultifuncIt	scanEncoderPinExti( &scanEncoderPinCfg, 1, GPIO_PIN_2 );
 

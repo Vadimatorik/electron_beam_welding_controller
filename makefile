@@ -77,6 +77,7 @@ PATH_USER_MC_LOW_LAVEL	:=
 include module_mc_hardware_interfaces/makefile
 include	module_stm32f2_low_level_by_st/makefile
 include module_freertos_for_stm32f2/makefile
+include module_math/makefile
 include module_system_dummy/makefile 
 
 #**********************************************************************
