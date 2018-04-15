@@ -1,7 +1,11 @@
 #include "rcc.h"
+#include "port.h"
 
-extern rcc scanRccObj;
+extern Rcc						scanRccObj;
+extern GlobalPort				scanGpObj;
 
 void mcHardwareInit ( void ) {
 	scanRccObj.setCfg( 0 );
+	scanGpObj.reinitAllPorts();
 }
+

@@ -1,7 +1,7 @@
-#include "rcc.h"
+#include "../../module_stm32f2_low_level_by_st/interfaces/rcc.h"
 #include "user_os.h"
 
-const rcc_cfg scanRccCfgArray[] = {
+const rccCfg scanRccCfgArray[] = {
 	/*!
 	 * Индекс: 0
 	 * Источник: внешний резонатор на 25 МГц.
@@ -34,8 +34,8 @@ const rcc_cfg scanRccCfgArray[] = {
 			.APB1CLKDivider						= RCC_HCLK_DIV4,
 			.APB2CLKDivider						= RCC_HCLK_DIV2
 		},
-		.f_latency								= FLASH_LATENCY_3
+		.fLatency								= FLASH_LATENCY_3
 	}
 };
 
-rcc scanRccObj( scanRccCfgArray, M_SIZE_ARRAY( scanRccCfgArray ) );
+Rcc scanRccObj( scanRccCfgArray, M_SIZE_ARRAY( scanRccCfgArray ) );
