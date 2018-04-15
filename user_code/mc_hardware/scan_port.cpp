@@ -35,10 +35,22 @@ const pinCfg scanEncoderPinCfg = {
 	}
 };
 
+const pinCfg scanAdcPinCfg = {
+	.GPIOx							=	GPIOA,
+	.init = {
+		.Pin						=	GPIO_PIN_0,
+		.Mode						=	GPIO_MODE_ANALOG,
+		.Pull						=	GPIO_NOPULL,
+		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
+		.Alternate					=	0
+	}
+};
+
 const pinCfg scanGpCfg[] = {
 	scanDacPinsCfg,
 	scanUsart1PinsCfg,
-	scanEncoderPinCfg
+	scanEncoderPinCfg,
+	scanAdcPinCfg
 };
 
 GlobalPort scanGpObj( scanGpCfg, M_SIZE_ARRAY( scanGpCfg ) );

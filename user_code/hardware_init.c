@@ -4,35 +4,6 @@
 
 extern globalApplicationStruct		g;
 
-void adcInit( void ) {
-	__HAL_RCC_ADC1_CLK_ENABLE();
-
-	ADC_ChannelConfTypeDef sConfig;
-
-	g.adc.Instance							=	ADC1;
-	g.adc.Init.ClockPrescaler				=	ADC_CLOCK_SYNC_PCLK_DIV4;
-	g.adc.Init.Resolution					=	ADC_RESOLUTION_12B;
-	g.adc.Init.ScanConvMode					=	DISABLE;
-	g.adc.Init.ContinuousConvMode			=	ENABLE;
-	g.adc.Init.DiscontinuousConvMode		=	DISABLE;
-	g.adc.Init.ExternalTrigConvEdge			=	ADC_EXTERNALTRIGCONVEDGE_NONE;
-	g.adc.Init.ExternalTrigConv				=	ADC_SOFTWARE_START;
-	g.adc.Init.DataAlign					=	ADC_DATAALIGN_RIGHT;
-	g.adc.Init.NbrOfConversion				=	1;
-	g.adc.Init.DMAContinuousRequests		=	DISABLE;
-	g.adc.Init.EOCSelection					=	ADC_EOC_SEQ_CONV;
-
-	if ( HAL_ADC_Init(&g.adc) != HAL_OK )
-		errorHandler();
-
-	sConfig.Channel							=	ADC_CHANNEL_0;
-	sConfig.Rank							=	1;
-	sConfig.SamplingTime					=	ADC_SAMPLETIME_28CYCLES;
-
-	if ( HAL_ADC_ConfigChannel(&g.adc, &sConfig) != HAL_OK )
-		errorHandler();
-}
-
 void dacInit ( void ) {
 	__HAL_RCC_DAC_CLK_ENABLE();
 
@@ -115,17 +86,6 @@ void uartInit ( void ) {
 	g.uart.Init.OverSampling				= UART_OVERSAMPLING_16;
 	if ( HAL_UART_Init( &g.uart ) != HAL_OK )
 		errorHandler();
-}
-
-void gpioForAdcInit ( void ) {
-	__HAL_RCC_GPIOA_CLK_ENABLE();
-
-	GPIO_InitTypeDef GPIO_InitStruct;
-
-	GPIO_InitStruct.Pin						=	GPIO_PIN_0;
-	GPIO_InitStruct.Mode					=	GPIO_MODE_ANALOG;
-	GPIO_InitStruct.Pull					=	GPIO_NOPULL;
-	HAL_GPIO_Init( GPIOA, &GPIO_InitStruct );
 }
 
 void nvicInit ( void ) {
