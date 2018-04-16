@@ -17,8 +17,7 @@ void scanHardwareInit ( void ) {
 	scanAdcObj.reinit();
 	scanTimInterruptObj.reinit();
 	scanUartObj.reinit();
-	scanDacArray[ 0 ]->reinit();
-	scanDacArray[ 1 ]->reinit();
+	scanDacObj.reinit();
 	scanNvicInit();
 }
 

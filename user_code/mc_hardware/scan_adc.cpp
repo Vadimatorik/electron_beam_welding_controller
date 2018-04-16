@@ -6,7 +6,7 @@ AdcOneChannelCfg adcCfg = {
 	.resolution			=	ADC_RESOLUTION_12B,
 	.dataAlign			=	ADC_DATAALIGN_RIGHT,
 	.channel			=	ADC_CHANNEL_0,
-	.samplingTime		=	ADC_SAMPLETIME_56CYCLES
+	.samplingTime		=	ADC_SAMPLETIME_144CYCLES
 };
 
 AdcOneChannel	scanAdcObj( &adcCfg );

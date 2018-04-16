@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+#define COUNT_ENCODER_TICK						26
+
 struct scanStruct {
 	/// Ось, относительно которой сейчас идет управление (0 или 1).
 	uint32_t				curAxis;
@@ -32,4 +34,14 @@ struct scanStruct {
 
 	/// На сколько идет смещение по оси во время сканирования.
 	float					integrator;
+
+	/// Текущее положение энкодера.
+	uint32_t				encoderTickNow;
+
+	/// Массив точек энкодера на активной оси.
+	float				axisPos[ COUNT_ENCODER_TICK ];
+
+	/// Флаг текущего режима работы.
+	/// 0 - сканирование. 1 - запись.
+	uint32_t				flagTypeJob;
 };

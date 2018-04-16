@@ -12,7 +12,7 @@ extern GlobalPort				scanGpObj;
 extern AdcOneChannel			scanAdcObj;
 extern TimInterrupt				scanTimInterruptObj;
 extern Uart						scanUartObj;
-extern DacOneChannelBase*		scanDacArray[ 2 ];
+extern Dac						scanDacObj;
 extern PinMultifuncIt			scanEncoderPinExti;
 
 #define TIM2_HANDLER_PRIO				6
