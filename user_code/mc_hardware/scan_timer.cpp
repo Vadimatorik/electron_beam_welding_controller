@@ -14,3 +14,17 @@ timInterruptCfg scanTimInterruptCfg = {
 };
 
 TimInterrupt scanTimInterruptObj( &scanTimInterruptCfg );
+
+clkTimBaseCfg scanModbusTimBaseCfg = {
+	.period			=	1000 - 1,
+	.prescaler		=	52 - 1,
+	.pulse			=	0
+};
+
+timInterruptCfg scanModbusTimInterruptCfg = {
+	.tim			=	TIM9,
+	.cfg			=	&scanModbusTimBaseCfg,
+	.countCfg		=	1,
+};
+
+TimInterrupt scanModbusTimInterruptObj( &scanModbusTimInterruptCfg );

@@ -2,8 +2,13 @@
 #include "scan_struct.h"
 #include "freertos_headers.h"
 #include "stm32f2xx_hal.h"
+#include "stm32f205xx.h"
+#include "scan_modbus.h"
 
 #include <math.h>
+
+extern Uart				scanUartObj;
+extern TimInterrupt		scanModbusTimInterruptObj;
 
 extern scanStruct	scan;
 extern uint32_t	getPointing ( void );
@@ -88,6 +93,21 @@ extern void xPortSysTickHandler( void );
 void SysTick_Handler () {
 	HAL_IncTick();
 	xPortSysTickHandler();
+}
+
+void TIM1_BRK_TIM9_IRQHandler ( void ) {
+	ModBusRTU_Slave_TimerTic( &scan.mb.ModBusRTU_Slave );
+	scanModbusTimInterruptObj.clearInterruptFlag();
+}
+
+void USART1_IRQHandler ( void ) {
+	if ( USART1->SR & USART_SR_TC )
+		ModBusRTU_Slave_InterBytes_Sent( &scan.mb.ModBusRTU_Slave );
+
+	if ( USART1->SR & USART_SR_RXNE )
+		ModBusRTU_Slave_Byte_Read( &scan.mb.ModBusRTU_Slave, USART1->DR );
+
+	USART1->SR	=	0;
 }
 
 }

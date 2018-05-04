@@ -7,6 +7,12 @@ void scanNvicInit ( void ) {
 
 	HAL_NVIC_SetPriority( EXTI2_IRQn, EXTI_HANDLER_PRIO, 0 );
 	HAL_NVIC_EnableIRQ( EXTI2_IRQn );
+
+	HAL_NVIC_SetPriority( USART1_IRQn, USART1_HANDLER_PRIO, 0 );
+	HAL_NVIC_EnableIRQ( USART1_IRQn );
+
+	HAL_NVIC_SetPriority( TIM1_BRK_TIM9_IRQn, TIM9_HANDLER_PRIO, 0 );
+	HAL_NVIC_EnableIRQ( TIM1_BRK_TIM9_IRQn );
 }
 
 void scanHardwareInit ( void ) {
@@ -16,8 +22,10 @@ void scanHardwareInit ( void ) {
 	scanGpObj.reinitAllPorts();
 	scanAdcObj.reinit();
 	scanTimInterruptObj.reinit();
+	scanModbusTimInterruptObj.reinit();
 	scanUartObj.reinit();
 	scanDacObj.reinit();
+
 	scanNvicInit();
 }
 
