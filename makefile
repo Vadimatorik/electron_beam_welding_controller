@@ -6,6 +6,7 @@
 MODULE_FREE_RTOS_OPTIMIZATION						:= -g3 -O0
 MODULE_STM32_F2_API_OPTIMIZATION					:= -g3 -O0 
 MODULE_USER_CODE_OPTIMIZATION						:= -g3 -O0
+MODULE_MODBUS_OPTIMIZATION							:= -g3 -O0
 
 DEFINE_PROJ	:= -DSTM32F205xx -DSTM32F2 -DSTM32 -D__CHECK_DEVICE_DEFINES
 
@@ -36,7 +37,7 @@ LDFLAGS			:= $(MK_FLAGS) $(LD_FILES) -fno-exceptions
 LDFLAGS			+= -ffunction-sections -Wl,--gc-sections
 
 # Формируем map файл.
-LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
+#LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
 
 #**********************************************************************
 # Параметры toolchain-а.
@@ -78,7 +79,9 @@ include module_mc_hardware_interfaces/makefile
 include	module_stm32f2_low_level_by_st/makefile
 include module_freertos_for_stm32f2/makefile
 include module_math/makefile
+include module_modbus/makefile 
 include module_system_dummy/makefile 
+
 
 #**********************************************************************
 # Сборка кода пользователя.
@@ -129,6 +132,7 @@ $(PROJECT_NAME).siz:	build/$(PROJECT_NAME).elf
 all:	$(PROJECT_NAME).siz
 #@$(OBJDUMP) -D build/$(PROJECT_NAME).elf > build/$(PROJECT_NAME).asm
 #@$(OBJCOPY) build/$(PROJECT_NAME).elf build/$(PROJECT_NAME).bin -O binary
+
 clean:	
 	@rm -R ./build
 	@echo 'Project cline!'

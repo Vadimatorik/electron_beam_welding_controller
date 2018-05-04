@@ -13,3 +13,6 @@
 [submodule "module_math"]
 	path = module_math
 	url = git@github.com:Vadimatorik/module_math.git
+[submodule "module_modbus"]
+	path = module_modbus
+	url = git@github.com:Vadimatorik/module_modbus.git

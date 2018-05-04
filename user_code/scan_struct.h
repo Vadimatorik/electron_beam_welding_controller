@@ -1,7 +1,7 @@
 #pragma once
 
 #include "arithmetic_mean.h"
-
+#include "scan_modbus.h"
 #include <stdint.h>
 
 #define COUNT_ENCODER_TICK						26
@@ -39,9 +39,12 @@ struct scanStruct {
 	uint32_t				encoderTickNow;
 
 	/// Массив точек энкодера на активной оси.
-	float				axisPos[ COUNT_ENCODER_TICK ];
+	float					axisPos[ COUNT_ENCODER_TICK ];
 
 	/// Флаг текущего режима работы.
 	/// 0 - сканирование. 1 - запись.
 	uint32_t				flagTypeJob;
+
+	/// ModBus.
+	scanModbus				mb;
 };

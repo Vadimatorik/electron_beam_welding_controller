@@ -18,7 +18,7 @@ const float scanSin[ 20 ] = {	0,				0.308865517,			0.587527514,		0.808736086,
 };
 
 
-void tim2_handler(void) {
+void TIM2_IRQHandler ( void ) {
 	/// Сбрасываем прерывание от таймера.
 	scanTimInterruptObj.clearInterruptFlag();
 
@@ -65,7 +65,7 @@ void setPosAxis ( void ) {
 	scanDacObj.setValue( scan.curAxis, outPos );
 }
 
-void exti_2_handler ( void ) {
+void EXTI2_IRQHandler ( void ) {
 	scanEncoderPinExti.clearIt();
 
 	/// Если идет сканирование.
@@ -85,7 +85,7 @@ void exti_2_handler ( void ) {
 }
 
 extern void xPortSysTickHandler( void );
-void sys_tick_handler () {
+void SysTick_Handler () {
 	HAL_IncTick();
 	xPortSysTickHandler();
 }
