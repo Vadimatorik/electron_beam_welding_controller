@@ -1,4 +1,5 @@
 #include "timer.h"
+#include "user_os.h"
 
 clkTimBaseCfg scanTimBaseCfg = {
 	.period			=	10000,
@@ -8,7 +9,6 @@ clkTimBaseCfg scanTimBaseCfg = {
 
 timInterruptCfg scanTimInterruptCfg = {
 	.tim			=	TIM2,
-	.timChannel		=	HAL_TIM_ACTIVE_CHANNEL_1,
 	.cfg			=	&scanTimBaseCfg,
 	.countCfg		=	1,
 };

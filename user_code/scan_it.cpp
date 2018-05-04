@@ -37,7 +37,7 @@ void tim2_handler(void) {
 
 	/// Текущее значение с обратной связи в усреднятор.
 	uint32_t	adcValue;
-	scanAdcObj.getMeasurement( adcValue );
+	adcValue	=	scanAdcObj.getMeasurement();
 	scan.adcMeasurement[ scan.pointAdcMeasurement ].postVal( static_cast< float >( adcValue ) );
 
 	/// В следующий раз кладем в следующий усреднятор.
