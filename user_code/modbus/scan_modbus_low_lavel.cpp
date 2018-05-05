@@ -9,12 +9,6 @@ extern	Uart				scanUartObj;
 extern	TimInterrupt		scanModbusTimInterruptObj;
 extern	Pin					scanUartDe;
 
-
-extern	Pin				t0;
-extern	Pin				t1;
-extern	Pin				t2;
-extern	Pin				t3;
-
 /// Инициализация UART.
 void modBusRtuSlaveUartInit ( uint8_t speed ) {
 	( void )speed;
@@ -52,13 +46,11 @@ void modBusRtuSlaveTimerInit ( uint8_t speed ) {
 
 /// Запустить таймер.
 void modBusRtuSlaveTimerStart ( void ) {
-	t3.set();
 	scanModbusTimInterruptObj.on();
 }
 
 /// Стоп таймер.
 void modBusRtuSlaveTimerStop ( void ) {
-	t3.reset();
 	scanModbusTimInterruptObj.off();
 }
 

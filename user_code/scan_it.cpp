@@ -9,8 +9,6 @@
 
 extern Uart				scanUartObj;
 extern TimInterrupt		scanModbusTimInterruptObj;
-extern	Pin				t0;
-extern	Pin				t1;
 extern scanStruct	scan;
 extern uint32_t	getPointing ( void );
 
@@ -97,8 +95,6 @@ void SysTick_Handler () {
 }
 
 void TIM1_BRK_TIM9_IRQHandler ( void ) {
-	t0.toggle();
-	t0.toggle();
 	ModBusRTU_Slave_TimerTic( &scan.mb.ModBusRTU_Slave );
 	scanModbusTimInterruptObj.clearInterruptFlag();
 }
@@ -115,8 +111,6 @@ void USART1_IRQHandler ( void ) {
 
 	if ( USART1_GET_IT_FLAG(USART_CR1_RXNEIE) ) {
 		if ( USART1_GET_FLAG( UART_FLAG_RXNE ) ) {
-			t1.toggle();
-			t1.toggle();
 			ModBusRTU_Slave_Byte_Read( &scan.mb.ModBusRTU_Slave, USART1->DR );
 		}
 	}
