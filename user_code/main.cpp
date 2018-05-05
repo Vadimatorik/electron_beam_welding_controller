@@ -14,13 +14,27 @@ void scanStructInit ( void ) {
 extern "C" {
 
 int main(void) {
+
 	scanHardwareInit();
 	scanStructInit();
 	scanDacObj.setValue( 0, 2048 );
 	scanDacObj.setValue( 1, 2048 );
 	scanAdcObj.startContinuousConversion();
 	scanTimInterruptObj.on();
-	while( 1 );
+
+	modbusInit();
+	ModBusRTU_Slave_Init_Addr_Speed( &scan.mb.ModBusRTU_Slave, 0x01, 0 );
+
+	scan.mb.RegMap_Table_1[0] = 0x01;
+	scan.mb.RegMap_Table_1[1] = 0x02;
+	scan.mb.RegMap_Table_1[2] = 0x03;
+	scan.mb.RegMap_Table_1[3] = 0x04;
+	scan.mb.RegMap_Table_1[4] = 0x05;
+
+
+	while( 1 ) {
+		ModBusRTU_Slave_Service( &scan.mb.ModBusRTU_Slave );
+	}
 }
 
 }

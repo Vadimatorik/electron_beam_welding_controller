@@ -6,8 +6,14 @@
 #include "stm32f205xx.h"
 
 extern	Uart				scanUartObj;
-extern	TimInterrupt		modbusTimInterruptObj;
+extern	TimInterrupt		scanModbusTimInterruptObj;
 extern	Pin					scanUartDe;
+
+
+extern	Pin				t0;
+extern	Pin				t1;
+extern	Pin				t2;
+extern	Pin				t3;
 
 /// Инициализация UART.
 void modBusRtuSlaveUartInit ( uint8_t speed ) {
@@ -16,12 +22,12 @@ void modBusRtuSlaveUartInit ( uint8_t speed ) {
 
 /// Разрешить прерывание по окончанию передачи
 void modBusRtuSlaveEnableInterTransPhisic ( void ) {
-	USART1->CR1		|=	USART_CR1_TCIE;
+	USART1->CR1		|=	USART_CR1_TXEIE;
 }
 
 /// Запретить прерывание по окончанию передачи
 void modBusRtuSlaveDisableInterTransPhisic ( void ) {
-	USART1->CR1		&=	~USART_CR1_TCIE;
+	USART1->CR1		&=	~USART_CR1_TXEIE;
 }
 
 /// Разрешить прерывание по приему байта.
@@ -46,12 +52,14 @@ void modBusRtuSlaveTimerInit ( uint8_t speed ) {
 
 /// Запустить таймер.
 void modBusRtuSlaveTimerStart ( void ) {
-	modbusTimInterruptObj.on();
+	t3.set();
+	scanModbusTimInterruptObj.on();
 }
 
 /// Стоп таймер.
 void modBusRtuSlaveTimerStop ( void ) {
-	modbusTimInterruptObj.off();
+	t3.reset();
+	scanModbusTimInterruptObj.off();
 }
 
 /// Направление линии на прием.

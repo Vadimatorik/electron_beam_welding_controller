@@ -8,21 +8,14 @@ void modbusInit ( void ) {
 	// Инициализировать таблицу регистров #1
 	ModBus_Slave_Init_Registers_Table(	&scan.mb.ModBusRTU_Slave_RegistersTable[0],
 										scan.mb.RegMap_Table_1,
-										ACCESS_REG_RO,
+										ACCESS_REG_RW,
 										0,
 										5	);
-
-	// Инициализировать таблицу регистров #2
-	ModBus_Slave_Init_Registers_Table(	&scan.mb.ModBusRTU_Slave_RegistersTable[1],
-										scan.mb.RegMap_Table_2,
-										ACCESS_REG_RW,
-										5,
-										10	);
 
 	// Инициализирует карту таблиц регистров
 	ModBus_Slave_Init_Registers_Map_Table(	&scan.mb.ModBusRTU_Slave_RegistersMapTable,
 											scan.mb.ModBusRTU_Slave_RegistersTable,
-											2	);
+											1	);
 
 
 	// Инициализация ModBusRTU_Slave
@@ -44,8 +37,11 @@ void modbusInit ( void ) {
 	scan.mb.ModBusRTU_Slave.FunctionPeriphery.pModBusRTU_Slave_Enable_Inter_Trans_Phisic =
 			modBusRtuSlaveEnableInterTransPhisic;
 
-	scan.mb.ModBusRTU_Slave.FunctionPeriphery.pModBusRTU_Slave_RTS1_RX = modBusRtuSlaveRtsRx;
-	scan.mb.ModBusRTU_Slave.FunctionPeriphery.pModBusRTU_Slave_RTS1_TX = modBusRtuSlaveRtsTx;
+	scan.mb.ModBusRTU_Slave.FunctionPeriphery.pModBusRTU_Slave_RTS1_RX =
+			modBusRtuSlaveRtsRx;
+
+	scan.mb.ModBusRTU_Slave.FunctionPeriphery.pModBusRTU_Slave_RTS1_TX =
+			modBusRtuSlaveRtsTx;
 
 	scan.mb.ModBusRTU_Slave.FunctionPeriphery.pModBusRTU_Slave_Timer_Init =
 			modBusRtuSlaveTimerInit;

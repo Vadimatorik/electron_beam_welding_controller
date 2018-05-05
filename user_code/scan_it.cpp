@@ -9,7 +9,8 @@
 
 extern Uart				scanUartObj;
 extern TimInterrupt		scanModbusTimInterruptObj;
-
+extern	Pin				t0;
+extern	Pin				t1;
 extern scanStruct	scan;
 extern uint32_t	getPointing ( void );
 
@@ -96,19 +97,40 @@ void SysTick_Handler () {
 }
 
 void TIM1_BRK_TIM9_IRQHandler ( void ) {
+	t0.toggle();
+	t0.toggle();
 	ModBusRTU_Slave_TimerTic( &scan.mb.ModBusRTU_Slave );
 	scanModbusTimInterruptObj.clearInterruptFlag();
 }
 
+#define USART1_GET_IT_FLAG(FLAG) ((USART1->CR1 & (FLAG)) == (FLAG))
+#define USART1_GET_FLAG(FLAG) ((USART1->SR & (FLAG)) == (FLAG))
+
 void USART1_IRQHandler ( void ) {
-	if ( USART1->SR & USART_SR_TC )
-		ModBusRTU_Slave_InterBytes_Sent( &scan.mb.ModBusRTU_Slave );
+	if ( USART1_GET_IT_FLAG(USART_CR1_TXEIE) ) {
+		if ( USART1_GET_FLAG( UART_FLAG_TXE ) ) {
+			ModBusRTU_Slave_InterBytes_Sent( &scan.mb.ModBusRTU_Slave );
+		}
+	}
 
-	if ( USART1->SR & USART_SR_RXNE )
-		ModBusRTU_Slave_Byte_Read( &scan.mb.ModBusRTU_Slave, USART1->DR );
+	if ( USART1_GET_IT_FLAG(USART_CR1_RXNEIE) ) {
+		if ( USART1_GET_FLAG( UART_FLAG_RXNE ) ) {
+			t1.toggle();
+			t1.toggle();
+			ModBusRTU_Slave_Byte_Read( &scan.mb.ModBusRTU_Slave, USART1->DR );
+		}
+	}
 
-	USART1->SR	=	0;
+	if ( USART1_GET_FLAG( UART_FLAG_ORE | UART_FLAG_NE | UART_FLAG_FE | UART_FLAG_PE ) ) {
+		volatile  uint32_t reg;
+		reg = USART1->SR;
+		reg = USART1->DR;
+		( void )reg;
+	}
 }
+
+
+
 
 }
 

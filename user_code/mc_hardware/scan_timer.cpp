@@ -16,8 +16,8 @@ timInterruptCfg scanTimInterruptCfg = {
 TimInterrupt scanTimInterruptObj( &scanTimInterruptCfg );
 
 clkTimBaseCfg scanModbusTimBaseCfg = {
-	.period			=	1000 - 1,
-	.prescaler		=	52 - 1,
+	.period			=	10416,
+	.prescaler		=	0,
 	.pulse			=	0
 };
 

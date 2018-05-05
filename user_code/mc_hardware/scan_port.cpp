@@ -58,14 +58,69 @@ const pinCfg scanUartDePinCfg = {
 };
 
 
+
+/// Тестопые пины.
+const pinCfg test0_pinCfg = {
+	.GPIOx							=	GPIOB,
+	.init = {
+		.Pin						=	GPIO_PIN_0,
+		.Mode						=	GPIO_MODE_OUTPUT_PP,
+		.Pull						=	GPIO_NOPULL,
+		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
+		.Alternate					=	0
+	}
+};
+
+const pinCfg test1_pinCfg = {
+	.GPIOx							=	GPIOB,
+	.init = {
+		.Pin						=	GPIO_PIN_1,
+		.Mode						=	GPIO_MODE_OUTPUT_PP,
+		.Pull						=	GPIO_NOPULL,
+		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
+		.Alternate					=	0
+	}
+};
+
+const pinCfg test2_pinCfg = {
+	.GPIOx							=	GPIOB,
+	.init = {
+		.Pin						=	GPIO_PIN_2,
+		.Mode						=	GPIO_MODE_OUTPUT_PP,
+		.Pull						=	GPIO_NOPULL,
+		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
+		.Alternate					=	0
+	}
+};
+
+const pinCfg test3_pinCfg = {
+	.GPIOx							=	GPIOB,
+	.init = {
+		.Pin						=	GPIO_PIN_2,
+		.Mode						=	GPIO_MODE_OUTPUT_PP,
+		.Pull						=	GPIO_NOPULL,
+		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
+		.Alternate					=	0
+	}
+};
+
+
 const pinCfg scanGpCfg[] = {
 	scanDacPinsCfg,
 	scanUsart1PinsCfg,
 	scanEncoderPinCfg,
 	scanAdcPinCfg,
-	scanUartDePinCfg
+	scanUartDePinCfg,
+	test0_pinCfg, test1_pinCfg, test2_pinCfg
 };
 
 GlobalPort		scanGpObj( scanGpCfg, M_SIZE_ARRAY( scanGpCfg ) );
 PinMultifuncIt	scanEncoderPinExti( &scanEncoderPinCfg, 1, GPIO_PIN_2 );
 Pin				scanUartDe( &scanUartDePinCfg );
+
+
+Pin				t0( &test0_pinCfg );
+Pin				t1( &test1_pinCfg );
+Pin				t2( &test2_pinCfg );
+Pin				t3( &test3_pinCfg );
+
