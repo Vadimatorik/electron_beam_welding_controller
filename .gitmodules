@@ -1,0 +1,18 @@
+[submodule "submodule/module_freertos_for_stm32f2"]
+	path = submodule/module_freertos_for_stm32f2
+	url = git@github.com:Vadimatorik/module_freertos_for_stm32f2.git
+[submodule "submodule/module_math"]
+	path = submodule/module_math
+	url = git@github.com:Vadimatorik/module_math.git
+[submodule "submodule/module_mc_hardware_interfaces"]
+	path = submodule/module_mc_hardware_interfaces
+	url = git@github.com:Vadimatorik/module_mc_hardware_interfaces.git
+[submodule "submodule/module_modbus"]
+	path = submodule/module_modbus
+	url = git@github.com:Vadimatorik/module_modbus.git
+[submodule "submodule/module_stm32f2_low_level_by_st"]
+	path = submodule/module_stm32f2_low_level_by_st
+	url = git@github.com:Vadimatorik/module_stm32f2_low_level_by_st.git
+[submodule "submodule/module_system_dummy"]
+	path = submodule/module_system_dummy
+	url = git@github.com:Vadimatorik/module_system_dummy.git
