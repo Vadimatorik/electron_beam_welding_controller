@@ -1,6 +1,6 @@
-﻿PROJECT_NAME		:= AyPlayer
+﻿PROJECT_NAME		:= scanEl
 
-DEFINE_PROJ			:=	-DSTM32F205xx -DSTM32F2 -DSTM32 -D__CHECK_DEVICE_DEFINES
+DEFINE_PROJ			:=	-DSTM32F205xx -DSTM32F2 -DSTM32
 
 DEFINE_PROJ			+=	-DMODULE_ARITHMETIC_MEAN_ENABLED
 DEFINE_PROJ			+=	-DMODULE_CPP_SYSTEM_CALLS_DUMMY_ENABLED
@@ -56,9 +56,6 @@ OBJDUMP			= $(TOOLCHAIN_PATH)-objdump
 GDB				= $(TOOLCHAIN_PATH)-gdb
 SIZE			= $(TOOLCHAIN_PATH)-size
 
-#**********************************************************************
-# Конфигурация проекта пользователя.
-#**********************************************************************
 # Все файлы из папки cfg в каталоге проекта.
 PROJ_CFG_H_FILE		:= $(wildcard cfg/*.h)
 PROJ_CFG_DIR		:= cfg
@@ -78,7 +75,7 @@ PROJ_C_FILE				+= $(shell find submodule/ -maxdepth 10 -type f -name "*.c" )
 PROJ_S_FILE				= $(STARTUPE_S_NAME)
 
 PROJ_DIR				:= $(shell find user_code/ -maxdepth 10 -type d -name "*" )
-PROJ_DIR				+= $(shell find submodule/ -maxdepth 105 -type d -name "*" )
+PROJ_DIR				+= $(shell find submodule/ -maxdepth 10 -type d -name "*" )
 
 PROJ_PATH				:= $(addprefix -I, $(PROJ_DIR))
 PROJ_OBJ_FILE			:= $(addprefix build/obj/, $(PROJ_CPP_FILE))

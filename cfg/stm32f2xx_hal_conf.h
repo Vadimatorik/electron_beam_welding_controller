@@ -1,99 +1,22 @@
-/**
-  ******************************************************************************
-  * @file    stm32f2xx_hal_conf_template.h
-  * @author  MCD Application Team
-  * @version V1.2.1
-  * @date    14-April-2017
-  * @brief   HAL configuration template file. 
-  *          This file should be copied to the application folder and renamed
-  *          to stm32f2xx_hal_conf.h.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
-  */ 
-
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32F2xx_HAL_CONF_H
-#define __STM32F2xx_HAL_CONF_H
+#pragma once
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-
-/* ########################## Module Selection ############################## */
-/**
-  * @brief This is the list of modules to be used in the HAL driver 
-  */
 #define HAL_MODULE_ENABLED
 #define HAL_ADC_MODULE_ENABLED
-//#define HAL_CAN_MODULE_ENABLED
-//#define HAL_CRC_MODULE_ENABLED
-//#define HAL_CRYP_MODULE_ENABLED
-#define HAL_DAC_MODULE_ENABLED
-//#define HAL_DCMI_MODULE_ENABLED
 #define HAL_DMA_MODULE_ENABLED
-//#define HAL_ETH_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
-//#define HAL_NAND_MODULE_ENABLED
-//#define HAL_NOR_MODULE_ENABLED
-//#define HAL_PCCARD_MODULE_ENABLED
-//#define HAL_SRAM_MODULE_ENABLED
-//#define HAL_HASH_MODULE_ENABLED
 #define HAL_GPIO_MODULE_ENABLED
-//#define HAL_I2C_MODULE_ENABLED
-//#define HAL_I2S_MODULE_ENABLED
 #define HAL_IWDG_MODULE_ENABLED
-#define HAL_PWR_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
-//#define HAL_RNG_MODULE_ENABLED
-//#define HAL_RTC_MODULE_ENABLED
-//#define HAL_SD_MODULE_ENABLED
-//#define HAL_SPI_MODULE_ENABLED
-#define HAL_TIM_MODULE_ENABLED
 #define HAL_UART_MODULE_ENABLED
-//#define HAL_USART_MODULE_ENABLED
-//#define HAL_IRDA_MODULE_ENABLED
-//#define HAL_SMARTCARD_MODULE_ENABLED
+#define HAL_TIM_MODULE_ENABLED
 #define HAL_WWDG_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
-//#define HAL_PCD_MODULE_ENABLED
-//#define HAL_HCD_MODULE_ENABLED
-//#define HAL_MMC_MODULE_ENABLED
+#define HAL_DAC_MODULE_ENABLED
 
-/* ########################## HSE/HSI Values adaptation ##################### */
-/**
-  * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
-  *        This value is used by the RCC HAL module to compute the system frequency
-  *        (when HSE is used as system clock source, directly or through the PLL).  
-  */
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE                    25000000U       /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
@@ -139,13 +62,6 @@
   #define EXTERNAL_CLOCK_VALUE       12288000U        /*!< Value of the Internal oscillator in Hz*/
 #endif /* EXTERNAL_CLOCK_VALUE */
 
-/* Tip: To avoid modifying this file each time you need to use different HSE,
-   ===  you can define the HSE value in your toolchain compiler preprocessor. */
-
-/* ########################### System Configuration ######################### */
-/**
-  * @brief This is the HAL system configuration section
-  */     
 #define  VDD_VALUE                      3300U /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY              0x6U /*!< tick interrupt priority */
 #define  USE_RTOS                          0U
@@ -288,29 +204,9 @@
 #ifdef HAL_MMC_MODULE_ENABLED
  #include "stm32f2xx_hal_mmc.h"
 #endif /* HAL_MMC_MODULE_ENABLED */
-/* Exported macro ------------------------------------------------------------*/
-#ifdef  USE_FULL_ASSERT
-/**
-  * @brief  The assert_param macro is used for function's parameters check.
-  * @param  expr: If expr is false, it calls assert_failed function
-  *         which reports the name of the source file and the source
-  *         line number of the call that failed. 
-  *         If expr is true, it returns no value.
-  * @retval None
-  */
-  #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
-/* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
-#else
-  #define assert_param(expr) ((void)0U)
-#endif /* USE_FULL_ASSERT */
 
+#define assert_param(expr) ((void)0U)
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F2xx_HAL_CONF_H */
- 
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -105,6 +105,20 @@
                                     								
                                 </option>
                                 								
+                                <option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1603063596" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F205xx"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F2"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+                                    								
+                                </option>
+                                								
                                 <inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1883789204" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
                                 							
                             </tool>
@@ -132,6 +146,14 @@
                                 <option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.923554307" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
                                     									
                                     <listOptionValue builtIn="false" value="STM32F205xx"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F2"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
                                     								
                                 </option>
                                 								
@@ -293,11 +315,39 @@
                                 								
                                 <option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.873946445" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
                                 								
+                                <option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1363275978" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F205xx"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F2"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+                                    								
+                                </option>
+                                								
                                 <inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.610929300" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
                                 							
                             </tool>
                             							
                             <tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.150490737" name="GNU ARM Cross C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
+                                								
+                                <option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1239571552" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F205xx"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32F2"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="STM32"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+                                    								
+                                </option>
                                 								
                                 <inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.291351715" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
                                 							
