@@ -21,7 +21,6 @@ extern "C" {
 #define configUSE_MALLOC_FAILED_HOOK    0                                   // В случае неудачного выделения памяти, функция пользователя не вызывается.
 #define configUSE_APPLICATION_TASK_TAG  0
 #define configUSE_COUNTING_SEMAPHORES   1
-#define configGENERATE_RUN_TIME_STATS   0
 #define configUSE_TRACE_FACILITY        1
 #define configGDB_HELPER				1
 
@@ -57,11 +56,15 @@ NVIC value of 255. */
 #define INCLUDE_vTaskDelayUntil					1
 #define INCLUDE_vTaskDelay						1
 
-/*
- * FreeRTOS забирает себе эти 2 handler-а.
- */
-#define		vPortSVCHandler		sv_call_handler
-#define		xPortPendSVHandler	pend_sv_handler
+#define vPortSVCHandler				SVC_Handler
+#define xPortPendSVHandler			PendSV_Handler
+
+#ifdef configGENERATE_RUN_TIME_STATS
+extern void				vConfigureTimerForRunTimeStats		( void );
+extern uint32_t			vGetRunTimeCounterValue				( void );
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()			vConfigureTimerForRunTimeStats()
+#define portGET_RUN_TIME_COUNTER_VALUE()					vGetRunTimeCounterValue();
+#endif
 
 #ifdef __cplusplus
 }
