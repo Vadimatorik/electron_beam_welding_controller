@@ -14,8 +14,11 @@ extern TimInterrupt				scanTimInterruptObj;
 extern Uart						scanUartObj;
 extern Dac						scanDacObj;
 extern PinMultifuncIt			scanEncoderPinExti;
+extern TimInterrupt				scanModbusTimInterruptObj;
 
 #define TIM2_HANDLER_PRIO				6
 #define EXTI_HANDLER_PRIO				6
+#define	USART1_HANDLER_PRIO				6
+#define TIM9_HANDLER_PRIO				6
 
 void scanHardwareInit ( void );

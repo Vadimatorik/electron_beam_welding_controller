@@ -1,4 +1,4 @@
-#include "../../module_stm32f2_low_level_by_st/interfaces/rcc.h"
+#include "rcc.h"
 #include "user_os.h"
 
 const rccCfg scanRccCfgArray[] = {

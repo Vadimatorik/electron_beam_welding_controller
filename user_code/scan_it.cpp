@@ -2,9 +2,13 @@
 #include "scan_struct.h"
 #include "freertos_headers.h"
 #include "stm32f2xx_hal.h"
+#include "stm32f205xx.h"
+#include "scan_modbus.h"
 
 #include <math.h>
 
+extern Uart				scanUartObj;
+extern TimInterrupt		scanModbusTimInterruptObj;
 extern scanStruct	scan;
 extern uint32_t	getPointing ( void );
 
@@ -18,7 +22,7 @@ const float scanSin[ 20 ] = {	0,				0.308865517,			0.587527514,		0.808736086,
 };
 
 
-void tim2_handler(void) {
+void TIM2_IRQHandler ( void ) {
 	/// Сбрасываем прерывание от таймера.
 	scanTimInterruptObj.clearInterruptFlag();
 
@@ -37,7 +41,7 @@ void tim2_handler(void) {
 
 	/// Текущее значение с обратной связи в усреднятор.
 	uint32_t	adcValue;
-	scanAdcObj.getMeasurement( adcValue );
+	adcValue	=	scanAdcObj.getMeasurement();
 	scan.adcMeasurement[ scan.pointAdcMeasurement ].postVal( static_cast< float >( adcValue ) );
 
 	/// В следующий раз кладем в следующий усреднятор.
@@ -65,7 +69,7 @@ void setPosAxis ( void ) {
 	scanDacObj.setValue( scan.curAxis, outPos );
 }
 
-void exti_2_handler ( void ) {
+void EXTI2_IRQHandler ( void ) {
 	scanEncoderPinExti.clearIt();
 
 	/// Если идет сканирование.
@@ -85,10 +89,42 @@ void exti_2_handler ( void ) {
 }
 
 extern void xPortSysTickHandler( void );
-void sys_tick_handler () {
+void SysTick_Handler () {
 	HAL_IncTick();
 	xPortSysTickHandler();
 }
+
+void TIM1_BRK_TIM9_IRQHandler ( void ) {
+	ModBusRTU_Slave_TimerTic( &scan.mb.ModBusRTU_Slave );
+	scanModbusTimInterruptObj.clearInterruptFlag();
+}
+
+#define USART1_GET_IT_FLAG(FLAG) ((USART1->CR1 & (FLAG)) == (FLAG))
+#define USART1_GET_FLAG(FLAG) ((USART1->SR & (FLAG)) == (FLAG))
+
+void USART1_IRQHandler ( void ) {
+	if ( USART1_GET_IT_FLAG(USART_CR1_TXEIE) ) {
+		if ( USART1_GET_FLAG( UART_FLAG_TXE ) ) {
+			ModBusRTU_Slave_InterBytes_Sent( &scan.mb.ModBusRTU_Slave );
+		}
+	}
+
+	if ( USART1_GET_IT_FLAG(USART_CR1_RXNEIE) ) {
+		if ( USART1_GET_FLAG( UART_FLAG_RXNE ) ) {
+			ModBusRTU_Slave_Byte_Read( &scan.mb.ModBusRTU_Slave, USART1->DR );
+		}
+	}
+
+	if ( USART1_GET_FLAG( UART_FLAG_ORE | UART_FLAG_NE | UART_FLAG_FE | UART_FLAG_PE ) ) {
+		volatile  uint32_t reg;
+		reg = USART1->SR;
+		reg = USART1->DR;
+		( void )reg;
+	}
+}
+
+
+
 
 }
 
