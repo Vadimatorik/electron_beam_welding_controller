@@ -52,7 +52,7 @@ void tim2_handler(void) {
 	scan.nowIterationAveraging = 0;
 
 	/// Выбираем направление смещения центра оси.
-	if ( !getPointing() ) {
+	if ( getPointing() ) {
 		scan.curPosCenCor[ scan.curAxis ] += scan.integrator;
 	} else {
 		scan.curPosCenCor[ scan.curAxis ] -= scan.integrator;
