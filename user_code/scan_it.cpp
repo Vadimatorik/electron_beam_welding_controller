@@ -102,6 +102,7 @@ void TIM1_BRK_TIM9_IRQHandler ( void ) {
 #define USART1_GET_IT_FLAG(FLAG) ((USART1->CR1 & (FLAG)) == (FLAG))
 #define USART1_GET_FLAG(FLAG) ((USART1->SR & (FLAG)) == (FLAG))
 
+
 void USART1_IRQHandler ( void ) {
 	if ( USART1_GET_IT_FLAG(USART_CR1_TXEIE) ) {
 		if ( USART1_GET_FLAG( UART_FLAG_TXE ) ) {

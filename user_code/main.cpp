@@ -23,14 +23,13 @@ int main( void ) {
 	scanTimInterruptObj.on();
 
 	modbusInit();
-	ModBusRTU_Slave_Init_Addr_Speed( &scan.mb.ModBusRTU_Slave, 0x01, 0 );
+	ModBusRTU_Slave_Init_Addr_Speed( &scan.mb.ModBusRTU_Slave, 0x02, 0 );
 
-	scan.mb.RegMap_Table_1[0] = 0x22;
-	scan.mb.RegMap_Table_1[1] = 0x02;
-	scan.mb.RegMap_Table_1[2] = 0x03;
-	scan.mb.RegMap_Table_1[3] = 0x04;
-	scan.mb.RegMap_Table_1[4] = 0x05;
+	scan.mb.RegMap_Table_1[0] = 0x33;
 
+	for ( int i = 1; i < 513; i++ ) {
+		scan.mb.RegMap_Table_1[ i ] = i;
+	}
 
 	while( 1 ) {
 		ModBusRTU_Slave_Service( &scan.mb.ModBusRTU_Slave );
