@@ -4,19 +4,6 @@
 extern "C" {
 #endif
 
-#define HAL_MODULE_ENABLED
-#define HAL_ADC_MODULE_ENABLED
-#define HAL_DMA_MODULE_ENABLED
-#define HAL_FLASH_MODULE_ENABLED
-#define HAL_GPIO_MODULE_ENABLED
-#define HAL_IWDG_MODULE_ENABLED
-#define HAL_RCC_MODULE_ENABLED
-#define HAL_UART_MODULE_ENABLED
-#define HAL_TIM_MODULE_ENABLED
-#define HAL_WWDG_MODULE_ENABLED
-#define HAL_CORTEX_MODULE_ENABLED
-#define HAL_DAC_MODULE_ENABLED
-
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE                    25000000U       /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
