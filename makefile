@@ -19,7 +19,7 @@ DEFINE_PROJ			+=	-DHAL_MODULE_ENABLED
 
 CODE_OPTIMIZATION	:=	-O0 -g3
 
-LD_FILES			= -T submodule/module_stm32f2_low_level_by_st/ld/STM32F205xG.ld
+LD_FILES			= -T submodule/module_stm32f2_low_level_by_st/ld/STM32F205xB.ld
 STARTUPE_S_NAME		=  submodule/module_stm32f2_low_level_by_st/startupe/startup_stm32f205xx.s
 
 MK_FLAGS			:= -mcpu=cortex-m3 -mthumb -mfloat-abi=soft --specs=nano.specs

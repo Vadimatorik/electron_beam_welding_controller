@@ -18,7 +18,7 @@ const pinCfg scanUsart1PinsCfg = {
 	.init = {
 		.Pin						=	GPIO_PIN_9 | GPIO_PIN_10,
 		.Mode						=	GPIO_MODE_AF_PP,
-		.Pull						=	GPIO_NOPULL,
+		.Pull						=	GPIO_PULLUP,
 		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
 		.Alternate					=	GPIO_AF7_USART1
 	}

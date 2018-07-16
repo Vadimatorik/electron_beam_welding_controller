@@ -25,7 +25,7 @@ int main( void ) {
 	modbusInit();
 	ModBusRTU_Slave_Init_Addr_Speed( &scan.mb.ModBusRTU_Slave, 0x01, 0 );
 
-	scan.mb.RegMap_Table_1[0] = 0x01;
+	scan.mb.RegMap_Table_1[0] = 0x22;
 	scan.mb.RegMap_Table_1[1] = 0x02;
 	scan.mb.RegMap_Table_1[2] = 0x03;
 	scan.mb.RegMap_Table_1[3] = 0x04;
