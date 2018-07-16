@@ -12,4 +12,4 @@ uartCfg scanUartCfg = {
 		.dmaTxCh			=	0,
 };
 
-Uart	scanUartObj( &scanUartCfg );
+Uart	scanUartObj( &scanUartCfg, 1 );
