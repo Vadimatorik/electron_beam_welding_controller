@@ -8,6 +8,9 @@ void scanNvicInit ( void ) {
 	HAL_NVIC_SetPriority( EXTI2_IRQn, EXTI_HANDLER_PRIO, 0 );
 	HAL_NVIC_EnableIRQ( EXTI2_IRQn );
 
+	HAL_NVIC_SetPriority( EXTI3_IRQn, EXTI_HANDLER_PRIO, 0 );
+	HAL_NVIC_EnableIRQ( EXTI3_IRQn );
+
 	HAL_NVIC_SetPriority( USART1_IRQn, USART1_HANDLER_PRIO, 0 );
 	HAL_NVIC_EnableIRQ( USART1_IRQn );
 

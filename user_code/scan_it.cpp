@@ -10,6 +10,10 @@
 extern Uart				scanUartObj;
 extern TimInterrupt		scanModbusTimInterruptObj;
 extern scanStruct	scan;
+
+extern PinMultifuncIt	scanEncoderPin_1_Exti;
+extern PinMultifuncIt	scanEncoderPin_2_Exti;
+
 extern uint32_t	getPointing ( void );
 
 extern "C" {
@@ -65,13 +69,40 @@ void TIM2_IRQHandler ( void ) {
 
 
 void setPosAxis ( void ) {
-	uint16_t outPos = 4096.0 / 3.3 * scan.axisPos[ scan.encoderTickNow ];
-	scanDacObj.setValue( scan.curAxis, outPos );
+	//uint16_t outPos = 4096.0 / 3.3 * scan.axisPos[ scan.encoderTickNow ];
+	//scanDacObj.setValue( scan.curAxis, outPos );
 }
 
-void EXTI2_IRQHandler ( void ) {
-	scanEncoderPinExti.clearIt();
 
+void EXTI2_IRQHandler ( void ) {
+	scanEncoderPin_1_Exti.clearIt();
+
+	scan.e1_up		=	true;
+
+	if ( scan.e2_up == true ) {
+			scan.e1_up	=	false;
+			scan.e2_up	=	false;
+
+			scan.encoderTickPosLoop--;
+
+			if ( scan.encoderTickPosLoop < 0 ) {
+				scan.encoderTickPosLoop	=	scan.encoderTickMax - 1;
+
+				int32_t	encoderTick;
+				encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
+				encoderTick	&=	0b111111111;
+				encoderTick	-=	1;
+
+				if ( encoderTick < 0 ) {
+					encoderTick	=	511;
+				}
+
+				scan.mb.RegMap_Table_1[ 0 ]	&=	0b111111111;
+				scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+			}
+		}
+
+	/*
 	/// Если идет сканирование.
 	if ( scan.flagTypeJob == 0 ) {
 		scan.axisPos[ scan.encoderTickNow ] = scan.curPosCenCor[ scan.curAxis ];
@@ -85,6 +116,37 @@ void EXTI2_IRQHandler ( void ) {
 	} else {
 		scan.encoderTickNow++;
 		setPosAxis();
+	}*/
+}
+
+#include <cmath>
+
+void EXTI3_IRQHandler ( void ) {
+	scanEncoderPin_2_Exti.clearIt();
+
+	scan.e2_up		=	true;
+
+	if ( scan.e1_up == true ) {
+		scan.e1_up	=	false;
+		scan.e2_up	=	false;
+
+		scan.encoderTickPosLoop++;
+
+		if ( scan.encoderTickPosLoop == static_cast< int32_t >( scan.encoderTickMax ) ) {
+			scan.encoderTickPosLoop	=	0;
+
+			int32_t	encoderTick;
+			encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
+			encoderTick	&=	0b111111111;
+			encoderTick	+=	1;
+
+			if ( encoderTick == 512 ) {
+				encoderTick	=	0;
+			}
+
+			scan.mb.RegMap_Table_1[ 0 ]	&=	0b111111111;
+			scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+		}
 	}
 }
 

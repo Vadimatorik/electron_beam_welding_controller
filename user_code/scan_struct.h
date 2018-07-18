@@ -35,8 +35,12 @@ struct scanStruct {
 	/// На сколько идет смещение по оси во время сканирования.
 	float					integrator;
 
-	/// Текущее положение энкодера.
-	uint32_t				encoderTickNow;
+	/// Смещение энкодера (коэффициент пропорциональности.
+	/// Например 18 - тиаков на оборот.
+	uint32_t				encoderTickMax;
+	int32_t					encoderTickPosLoop;
+	bool					e1_up;
+	bool					e2_up;
 
 	/// Массив точек энкодера на активной оси.
 	float					axisPos[ COUNT_ENCODER_TICK ];
