@@ -61,9 +61,9 @@ void TIM2_IRQHandler ( void ) {
 
 	/// Выбираем направление смещения центра оси.
 	if ( getPointing() ) {
-		scan.curPosCenCor[ scan.curAxis ] += scan.integrator;
+		scan.curPosCenCor[ scan.curAxis ] += scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
 	} else {
-		scan.curPosCenCor[ scan.curAxis ] -= scan.integrator;
+		scan.curPosCenCor[ scan.curAxis ] -= scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
 	}
 }
 
@@ -72,37 +72,9 @@ void setPosAxis ( void ) {
 	//uint16_t outPos = 4096.0 / 3.3 * scan.axisPos[ scan.encoderTickNow ];
 	//scanDacObj.setValue( scan.curAxis, outPos );
 }
+///	if ( ( ( GPIOA->ODR & ( 1 << 2 ) ) == 0 ) ) {
 
-
-void EXTI2_IRQHandler ( void ) {
-	scanEncoderPin_1_Exti.clearIt();
-
-	scan.e1_up		=	true;
-
-	if ( scan.e2_up == true ) {
-			scan.e1_up	=	false;
-			scan.e2_up	=	false;
-
-			scan.encoderTickPosLoop--;
-
-			if ( scan.encoderTickPosLoop < 0 ) {
-				scan.encoderTickPosLoop	=	scan.encoderTickMax - 1;
-
-				int32_t	encoderTick;
-				encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
-				encoderTick	&=	0b111111111;
-				encoderTick	-=	1;
-
-				if ( encoderTick < 0 ) {
-					encoderTick	=	511;
-				}
-
-				scan.mb.RegMap_Table_1[ 0 ]	&=	0b111111111;
-				scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
-			}
-		}
-
-	/*
+/*
 	/// Если идет сканирование.
 	if ( scan.flagTypeJob == 0 ) {
 		scan.axisPos[ scan.encoderTickNow ] = scan.curPosCenCor[ scan.curAxis ];
@@ -117,36 +89,49 @@ void EXTI2_IRQHandler ( void ) {
 		scan.encoderTickNow++;
 		setPosAxis();
 	}*/
+
+__attribute__ ((section (".ramfunc")))
+void EXTI2_IRQHandler ( void ) {
+	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_2 );
+
+	if ( ( ( GPIOA->IDR & ( 1 << 3 ) ) == 0 ) ) {
+		int32_t	encoderTick;
+		encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
+		encoderTick	&=	0b111111111;
+		encoderTick	-=	1;
+
+		if ( encoderTick < 0 ) {
+			encoderTick	=	511;
+		}
+
+		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+	}
+
 }
 
 #include <cmath>
 
+__attribute__ ((section (".ramfunc")))
 void EXTI3_IRQHandler ( void ) {
-	scanEncoderPin_2_Exti.clearIt();
+	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_3 );
 
-	scan.e2_up		=	true;
+	if ( ( ( GPIOA->IDR & ( 1 << 2 ) ) == 0 ) ) {
+		uint32_t	encoderTick;
+		encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
+		encoderTick	&=	0b111111111;
+		encoderTick	+=	1;
 
-	if ( scan.e1_up == true ) {
-		scan.e1_up	=	false;
-		scan.e2_up	=	false;
-
-		scan.encoderTickPosLoop++;
-
-		if ( scan.encoderTickPosLoop == static_cast< int32_t >( scan.encoderTickMax ) ) {
-			scan.encoderTickPosLoop	=	0;
-
-			int32_t	encoderTick;
-			encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
-			encoderTick	&=	0b111111111;
-			encoderTick	+=	1;
-
-			if ( encoderTick == 512 ) {
-				encoderTick	=	0;
-			}
-
-			scan.mb.RegMap_Table_1[ 0 ]	&=	0b111111111;
-			scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+		if ( encoderTick == 512 ) {
+			encoderTick	=	0;
 		}
+
+		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
 	}
 }
 

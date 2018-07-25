@@ -15,7 +15,7 @@ struct scanModbus {
 	// Уникальная карта полей таблиц регистров
 	struct modbus_slave_registers_map_table ModBusRTU_Slave_RegistersMapTable;
 
-	uint16_t RegMap_Table_1[ 1 + 512 ];
+	uint16_t RegMap_Table_1[ 1 + 512 + 1 ];
 
 	// Приемопередающий буфер
 	uint8_t ModBusRTU_Slave_RxTxBuff[257];

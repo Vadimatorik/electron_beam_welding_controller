@@ -24,16 +24,28 @@ const pinCfg scanUsart1PinsCfg = {
 	}
 };
 
-const pinCfg scanEncoderPinCfg = {
+const pinCfg scanEncoderPin_1_Cfg = {
 	.GPIOx							=	GPIOA,
 	.init = {
-		.Pin						=	GPIO_PIN_2 | GPIO_PIN_3,
+		.Pin						=	GPIO_PIN_2,
 		.Mode						=	GPIO_MODE_IT_RISING,
 		.Pull						=	GPIO_NOPULL,
 		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
 		.Alternate					=	0
 	}
 };
+
+const pinCfg scanEncoderPin_2_Cfg = {
+	.GPIOx							=	GPIOA,
+	.init = {
+		.Pin						=	GPIO_PIN_3,
+		.Mode						=	GPIO_MODE_IT_RISING,
+		.Pull						=	GPIO_NOPULL,
+		.Speed						=	GPIO_SPEED_FREQ_VERY_HIGH,
+		.Alternate					=	0
+	}
+};
+
 
 const pinCfg scanAdcPinCfg = {
 	.GPIOx							=	GPIOA,
@@ -60,15 +72,16 @@ const pinCfg scanUartDePinCfg = {
 const pinCfg scanGpCfg[] = {
 	scanDacPinsCfg,
 	scanUsart1PinsCfg,
-	scanEncoderPinCfg,
+	scanEncoderPin_1_Cfg,
+	scanEncoderPin_2_Cfg,
 	scanAdcPinCfg,
 	scanUartDePinCfg
 };
 
 GlobalPort		scanGpObj( scanGpCfg, M_SIZE_ARRAY( scanGpCfg ) );
 
-PinMultifuncIt	scanEncoderPin_1_Exti( &scanEncoderPinCfg, 1, GPIO_PIN_2 );
-PinMultifuncIt	scanEncoderPin_2_Exti( &scanEncoderPinCfg, 1, GPIO_PIN_3 );
+PinMultifuncIt	scanEncoderPin_1_Exti( &scanEncoderPin_1_Cfg, 1, GPIO_PIN_2 );
+PinMultifuncIt	scanEncoderPin_2_Exti( &scanEncoderPin_2_Cfg, 1, GPIO_PIN_3 );
 
 Pin				scanUartDe( &scanUartDePinCfg );
 

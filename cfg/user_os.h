@@ -102,7 +102,10 @@
 #define BIT_BAND_PER_BASE   ((uint32_t)0x42000000)
 
 // Получаем адрес бита периферии в Bit Banding области.
-#define M_GET_BB_P_PER(ADDRESS,BIT) ((BIT_BAND_PER_BASE + (ADDRESS - BIT_BAND_PER_REF)*32 + (BIT * 4)))
+#define M_GET_BB_P_PER(ADDRESS,BIT) 			((BIT_BAND_PER_BASE + (ADDRESS - BIT_BAND_PER_REF)*32 + (BIT * 4)))
+
+// Получаем сам бит.
+#define M_GET_BB_BIT_DATA(ADDRESS,BIT)			*( ( uint32_t* )M_GET_BB_P_PER( ADDRESS, BIT ) )
 
 // Преобразует число в uint32_t переменной в указатель на uint32_t.
 // Причем запрещает переписывать то, что по указателю (только чтение).

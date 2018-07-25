@@ -58,6 +58,19 @@
 									<listOptionValue builtIn="false" value="STM32"/>
 									<listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
 									<listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_ARITHMETIC_MEAN_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_CPP_SYSTEM_CALLS_DUMMY_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_ADC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_DMA_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_GPIO_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_PWR_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_RCC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_TIM_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_UART_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_WWDG_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_FLASH_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_CORTEX_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_MODULE_ENABLED"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1883789204" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -77,6 +90,19 @@
 									<listOptionValue builtIn="false" value="STM32"/>
 									<listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
 									<listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_ARITHMETIC_MEAN_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_CPP_SYSTEM_CALLS_DUMMY_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_ADC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_DMA_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_GPIO_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_PWR_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_RCC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_TIM_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_UART_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_WWDG_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_FLASH_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_CORTEX_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_MODULE_ENABLED"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1485726409" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -127,7 +153,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.680739600" name="Release" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.680739600" name="Release" optionalBuildProperties="" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release">
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.680739600." name="/" resourcePath="">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.release.2141278604" name="ARM Cross GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.release">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1646326700" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
@@ -157,22 +183,48 @@
 							<builder buildPath="${workspace_loc:/scan_el}/Release" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1975875946" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.66240706" name="GNU ARM Cross Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.873946445" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1363275978" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1363275978" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F205xx"/>
 									<listOptionValue builtIn="false" value="STM32F2"/>
 									<listOptionValue builtIn="false" value="STM32"/>
 									<listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
 									<listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_ARITHMETIC_MEAN_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_CPP_SYSTEM_CALLS_DUMMY_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_ADC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_DMA_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_GPIO_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_PWR_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_RCC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_TIM_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_UART_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_WWDG_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_FLASH_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_CORTEX_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_MODULE_ENABLED"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.610929300" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.150490737" name="GNU ARM Cross C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1239571552" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1239571552" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F205xx"/>
 									<listOptionValue builtIn="false" value="STM32F2"/>
 									<listOptionValue builtIn="false" value="STM32"/>
 									<listOptionValue builtIn="false" value="__CHECK_DEVICE_DEFINES"/>
 									<listOptionValue builtIn="false" value="HAL_DAC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_ARITHMETIC_MEAN_ENABLED"/>
+									<listOptionValue builtIn="false" value="MODULE_CPP_SYSTEM_CALLS_DUMMY_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_ADC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_DMA_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_GPIO_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_PWR_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_RCC_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_TIM_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_UART_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_WWDG_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_FLASH_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_CORTEX_MODULE_ENABLED"/>
+									<listOptionValue builtIn="false" value="HAL_MODULE_ENABLED"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.291351715" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>

@@ -7,6 +7,12 @@
 #define COUNT_ENCODER_TICK						50
 
 struct scanStruct {
+
+	/// 0 - ничего не происходит.
+	/// 1 - начато сканирование.
+	/// 2 - закончено сканирование и идет воспроизведение.
+	uint32_t				state;
+
 	/// Ось, относительно которой сейчас идет управление (0 или 1).
 	uint32_t				curAxis;
 
@@ -32,22 +38,10 @@ struct scanStruct {
 	/// Текущий этап усреднения.
 	uint32_t				nowIterationAveraging;
 
-	/// На сколько идет смещение по оси во время сканирования.
-	float					integrator;
-
-	/// Смещение энкодера (коэффициент пропорциональности.
-	/// Например 18 - тиаков на оборот.
-	uint32_t				encoderTickMax;
-	int32_t					encoderTickPosLoop;
-	bool					e1_up;
-	bool					e2_up;
-
 	/// Массив точек энкодера на активной оси.
 	float					axisPos[ COUNT_ENCODER_TICK ];
 
-	/// Флаг текущего режима работы.
-	/// 0 - сканирование. 1 - запись.
-	uint32_t				flagTypeJob;
+
 
 	/// ModBus.
 	scanModbus				mb;
