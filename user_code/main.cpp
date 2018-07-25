@@ -11,6 +11,7 @@ void scanStructInit ( void ) {
 	scan.scanAmplitude			=	0.6;
 	scan.countAveraging			=	20;
 	scan.state					=	0;
+	scan.posAnal				=	6;
 }
 
 #include <math.h>

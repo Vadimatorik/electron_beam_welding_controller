@@ -32,7 +32,7 @@ void TIM2_IRQHandler ( void ) {
 
 	/// Формируем сигнал сканирования (синусоида вокруг мнимой середины.
 	float floatOutPos ;
-	floatOutPos =	scanSin[ scan.pointAdcMeasurement ] *
+	floatOutPos =	scanSin[ scan.pointAdcMeasurementNow ] *
 					scan.scanAmplitude +
 					scan.curPosCenCor[ scan.curAxis ];
 
@@ -46,21 +46,30 @@ void TIM2_IRQHandler ( void ) {
 	/// Текущее значение с обратной связи в усреднятор.
 	uint32_t	adcValue;
 	adcValue	=	scanAdcObj.getMeasurement();
-	scan.adcMeasurement[ scan.pointAdcMeasurement ].postVal( static_cast< float >( adcValue ) );
 
-	/// В следующий раз кладем в следующий усреднятор.
-	scan.pointAdcMeasurement++;
-	if ( scan.pointAdcMeasurement == 20 ) {		/// Если прошли все усредняторы (считали волну), то...
-		scan.pointAdcMeasurement = 0;			/// Со следующего элемента кладем с начала, считая, что новая волна.
-		scan.nowIterationAveraging++;			/// Ну и запоминаем, что одну волну прошли.
+	if ( scan.pointAdcMeasurementNow >= 10 ) {
+		scan.posSost	+= adcValue;
+	} else {
+		scan.posSost	-= adcValue;
 	}
 
-	/// Если просканировали недостаточное количество волн для анализа - выходим.
-	if ( scan.nowIterationAveraging != scan.countAveraging ) return;
-	scan.nowIterationAveraging = 0;
+	if ( scan.pointAdcMeasurementNow == scan.posAnal ) {
+		scan.pos = adcValue;
+	}
 
-	/// Выбираем направление смещения центра оси.
-	if ( getPointing() ) {
+	scan.pointAdcMeasurementNow++;
+
+	if ( scan.pointAdcMeasurementNow != 20)
+		return;
+
+	scan.pointAdcMeasurementNow = 0;
+
+	int32_t len = scan.pos - scan.posSost;
+
+	if ( abs( len ) < 20 )
+		return;
+
+	if ( len < 0 ) {
 		scan.curPosCenCor[ scan.curAxis ] += scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
 	} else {
 		scan.curPosCenCor[ scan.curAxis ] -= scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
