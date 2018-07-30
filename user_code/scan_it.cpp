@@ -25,6 +25,10 @@ const float scanSin[ 20 ] = {	0,				0.308865517,			0.587527514,		0.808736086,
 								-0.951840878,	-0.810605466,			-0.590102077,		-0.311893523
 };
 
+struct pointAdc {
+	uint32_t		index;
+	uint32_t		value;
+};
 
 void TIM2_IRQHandler ( void ) {
 	/// Сбрасываем прерывание от таймера.
@@ -33,7 +37,7 @@ void TIM2_IRQHandler ( void ) {
 	/// Формируем сигнал сканирования (синусоида вокруг мнимой середины.
 	float floatOutPos ;
 	floatOutPos =	scanSin[ scan.pointAdcMeasurementNow ] *
-					scan.scanAmplitude +
+					scan.mb.RegMap_Table_1[ 514 ] * 1.0 / 100.0 +
 					scan.curPosCenCor[ scan.curAxis ];
 
 	if ( floatOutPos < 0 )	floatOutPos = 0;
@@ -47,10 +51,22 @@ void TIM2_IRQHandler ( void ) {
 	uint32_t	adcValue;
 	adcValue	=	scanAdcObj.getMeasurement();
 
-	if ( scan.pointAdcMeasurementNow >= 10 ) {
-		scan.posSost	+= adcValue;
-	} else {
-		scan.posSost	-= adcValue;
+	static pointAdc min;
+	static pointAdc max;
+
+	if ( scan.pointAdcMeasurementNow == 0 ) {
+		min.value = adcValue;
+		max.value = adcValue;
+	}
+
+	if ( adcValue < min.value ) {
+		min.value = adcValue;
+		min.index = scan.pointAdcMeasurementNow;
+	}
+
+	if ( adcValue > max.value ) {
+		max.value = adcValue;
+		max.index = scan.pointAdcMeasurementNow;
 	}
 
 	if ( scan.pointAdcMeasurementNow == scan.posAnal ) {
@@ -64,12 +80,7 @@ void TIM2_IRQHandler ( void ) {
 
 	scan.pointAdcMeasurementNow = 0;
 
-	int32_t len = scan.pos - scan.posSost;
-
-	if ( abs( len ) < 20 )
-		return;
-
-	if ( len < 0 ) {
+	if ( min.index > max.index ) {
 		scan.curPosCenCor[ scan.curAxis ] += scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
 	} else {
 		scan.curPosCenCor[ scan.curAxis ] -= scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
@@ -111,12 +122,18 @@ void EXTI2_IRQHandler ( void ) {
 
 		if ( encoderTick < 0 ) {
 			encoderTick	=	511;
+			if ( scan.state == 1 ) {
+				scan.state = 0;
+				scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
+			}
 		}
 
-		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
-		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+		if ( scan.state == 1 ) {
+			scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+			scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
 
-		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+			scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+		}
 	}
 
 }
@@ -135,12 +152,18 @@ void EXTI3_IRQHandler ( void ) {
 
 		if ( encoderTick == 512 ) {
 			encoderTick	=	0;
+			if ( scan.state == 1 ) {
+							scan.state = 0;
+							scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
+						}
 		}
 
-		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
-		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+		if ( scan.state == 1 ) {
+			scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+			scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
 
-		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+			scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * scan.curPosCenCor[ scan.curAxis ];
+		}
 	}
 }
 

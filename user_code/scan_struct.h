@@ -20,13 +20,10 @@ struct scanStruct {
 	float					curPosCenCor[2];
 
 	uint32_t				pointAdcMeasurementNow;
-	int32_t					posSost;
 	int32_t					pos;
 
 	uint32_t				posAnal;
 
-	/// Амплитуда сканирования в вольтах.
-	float					scanAmplitude;
 
 	/// Количество итераций усреднения входной синусоиды с датчика.
 	uint32_t				countAveraging;

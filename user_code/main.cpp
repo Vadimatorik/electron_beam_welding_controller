@@ -8,7 +8,6 @@ scanStruct	scan;
 void scanStructInit ( void ) {
 	scan.curPosCenCor[ 0 ]		=	1.65;
 	scan.curPosCenCor[ 1 ]		=	1.65;
-	scan.scanAmplitude			=	0.6;
 	scan.countAveraging			=	20;
 	scan.state					=	0;
 	scan.posAnal				=	6;
@@ -38,6 +37,8 @@ int main( void ) {
 		if ( ( scan.mb.RegMap_Table_1[0] & ( 1 << 13 ) ) != 0 ) {
 			if ( scan.state == 0 ) {
 				scan.state	=	1;
+				/// Сброс энкодера.
+				scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 				scanTimInterruptObj.on();
 			}
 		}
