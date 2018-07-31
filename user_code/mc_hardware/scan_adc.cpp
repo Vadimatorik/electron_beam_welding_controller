@@ -4,11 +4,11 @@
 AdcOneChannelCfg adcCfg[] = {
 	{
 		.ADCx				=	ADC1,
-		.clockPrescaler		=	ADC_CLOCK_SYNC_PCLK_DIV4,
+		.clockPrescaler		=	ADC_CLOCK_SYNC_PCLK_DIV2,
 		.resolution			=	ADC_RESOLUTION_12B,
 		.dataAlign			=	ADC_DATAALIGN_RIGHT,
 		.channel			=	ADC_CHANNEL_0,
-		.samplingTime		=	ADC_SAMPLETIME_144CYCLES
+		.samplingTime		=	ADC_SAMPLETIME_84CYCLES
 	}
 };
 

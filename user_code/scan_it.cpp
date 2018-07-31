@@ -110,60 +110,94 @@ void setPosAxis ( void ) {
 		setPosAxis();
 	}*/
 
+static int psevDoEnc = 0;
+
+__attribute__ ((section (".ramfunc")))
+void inc_encoder ( void ) {
+	uint32_t	encoderTick;
+	encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
+	encoderTick	&=	0b111111111;
+
+	if ( scan.state == 1 ) {
+		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * scan.curPosCenCor[ scan.curAxis ];
+	}
+
+	encoderTick	+=	1;
+	encoderTick	&=	0b111111111;
+
+	scan.mb.RegMap_Table_1[ 0 ] &= ~0b111111111;
+	scan.mb.RegMap_Table_1[ 0 ] |= encoderTick;
+
+	if ( encoderTick == 0 ) {
+		if ( scan.state == 1 ) {
+			scan.state = 0;
+			scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
+		}
+	}
+}
+
+__attribute__ ((section (".ramfunc")))
+void dec_encoder ( void ) {
+	int32_t	encoderTick;
+	encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
+	encoderTick	&=	0b111111111;
+	encoderTick	-=	1;
+
+	if ( encoderTick < 0 ) {
+		encoderTick	=	511;
+		if ( scan.state == 1 ) {
+			scan.state = 0;
+			scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
+		}
+	}
+
+	if ( scan.state == 1 ) {
+		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+	}
+}
+
 __attribute__ ((section (".ramfunc")))
 void EXTI2_IRQHandler ( void ) {
 	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_2 );
 
 	if ( ( ( GPIOA->IDR & ( 1 << 3 ) ) == 0 ) ) {
-		int32_t	encoderTick;
-		encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
-		encoderTick	&=	0b111111111;
-		encoderTick	-=	1;
+		psevDoEnc--;
+							if ( psevDoEnc < 0 ) {
+								psevDoEnc = 17;
+								dec_encoder();
+							}
 
-		if ( encoderTick < 0 ) {
-			encoderTick	=	511;
-			if ( scan.state == 1 ) {
-				scan.state = 0;
-				scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
-			}
-		}
-
-		if ( scan.state == 1 ) {
-			scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
-			scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
-
-			scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
-		}
 	}
 
 }
 
 #include <cmath>
 
+
+
+
 __attribute__ ((section (".ramfunc")))
 void EXTI3_IRQHandler ( void ) {
 	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_3 );
 
+
 	if ( ( ( GPIOA->IDR & ( 1 << 2 ) ) == 0 ) ) {
-		uint32_t	encoderTick;
-		encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
-		encoderTick	&=	0b111111111;
-		encoderTick	+=	1;
 
-		if ( encoderTick == 512 ) {
-			encoderTick	=	0;
-			if ( scan.state == 1 ) {
-							scan.state = 0;
-							scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
-						}
-		}
+		psevDoEnc++;
+								if ( psevDoEnc == 18 ) {
+									psevDoEnc = 0;
+									inc_encoder();
+								}
 
-		if ( scan.state == 1 ) {
-			scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
-			scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
 
-			scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * scan.curPosCenCor[ scan.curAxis ];
-		}
+
+
+
+
 	}
 }
 

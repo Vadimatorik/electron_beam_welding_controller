@@ -17,7 +17,7 @@ DEFINE_PROJ			+=	-DHAL_FLASH_MODULE_ENABLED
 DEFINE_PROJ			+=	-DHAL_CORTEX_MODULE_ENABLED
 DEFINE_PROJ			+=	-DHAL_MODULE_ENABLED
 
-CODE_OPTIMIZATION	:=	-O0 -g3
+CODE_OPTIMIZATION	:=	-Os -g0
 
 LD_FILES			= -T submodule/module_stm32f2_low_level_by_st/ld/STM32F205xB.ld
 STARTUPE_S_NAME		=  submodule/module_stm32f2_low_level_by_st/startupe/startup_stm32f205xx.s
