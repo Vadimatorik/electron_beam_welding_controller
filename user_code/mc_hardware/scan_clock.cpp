@@ -21,8 +21,8 @@ const rccCfg scanRccCfgArray[] = {
 			.PLL = {
 				.PLLState						= RCC_PLL_ON,
 				.PLLSource						= RCC_PLLSOURCE_HSE,
-				.PLLM							= 20,
-				.PLLN							= 192,
+				.PLLM							= 25,
+				.PLLN							= 336,
 				.PLLP							= RCC_PLLP_DIV2,
 				.PLLQ							= 4
 		   	}
@@ -34,7 +34,7 @@ const rccCfg scanRccCfgArray[] = {
 			.APB1CLKDivider						= RCC_HCLK_DIV4,
 			.APB2CLKDivider						= RCC_HCLK_DIV2
 		},
-		.fLatency								= FLASH_LATENCY_3
+		.fLatency								= FLASH_LATENCY_5
 	}
 };
 

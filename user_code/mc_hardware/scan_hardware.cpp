@@ -1,5 +1,5 @@
 #include "scan_hardware.h"
-#include "stm32f2xx_hal.h"
+#include "stm32f4xx_hal.h"
 
 void scanNvicInit ( void ) {
 	HAL_NVIC_SetPriority( TIM2_IRQn, TIM2_HANDLER_PRIO, 0 );
@@ -19,7 +19,9 @@ void scanNvicInit ( void ) {
 }
 
 void scanHardwareInit ( void ) {
-	HAL_Init();
+	__HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
+	__HAL_FLASH_DATA_CACHE_ENABLE();
+	__HAL_FLASH_PREFETCH_BUFFER_ENABLE();
 
 	scanRccObj.setCfg();
 	scanGpObj.reinitAllPorts();

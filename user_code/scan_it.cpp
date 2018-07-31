@@ -1,8 +1,7 @@
 #include "scan_hardware.h"
 #include "scan_struct.h"
-#include "freertos_headers.h"
-#include "stm32f2xx_hal.h"
-#include "stm32f205xx.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f415xx.h"
 #include "scan_modbus.h"
 
 #include <math.h>
@@ -18,11 +17,11 @@ extern uint32_t	getPointing ( void );
 
 extern "C" {
 
-const float scanSin[ 20 ] = {	0,				0.308865517,			0.587527514,		0.808736086,
-								0.950859487,	0.999999702,			0.951351404,		0.80967176,
-								0.58881557,		0.310379922,			0.00159265287,		-0.307350338,
-								-0.586238027,	-0.807798266,			-0.950365126,		-0.999997139,
-								-0.951840878,	-0.810605466,			-0.590102077,		-0.311893523
+float scanSin[ 20 ] = {		0,				0.308865517,			0.587527514,		0.808736086,
+							0.950859487,		0.999999702,			0.951351404,		0.80967176,
+							0.58881557,		0.310379922,			0.00159265287,		-0.307350338,
+							-0.586238027,		-0.807798266,			-0.950365126,		-0.999997139,
+							-0.951840878,	-	0.810605466,			-0.590102077,		-0.311893523
 };
 
 struct pointAdc {
@@ -30,9 +29,45 @@ struct pointAdc {
 	uint32_t		value;
 };
 
+__attribute__ ((section ("data")))
+static pointAdc min;
+
+__attribute__ ((section ("data")))
+static pointAdc max;
+
+#define PERIOD_PID					1.0 / 300.0
+
+__attribute__ ((section (".ramfunc")))
+float pid_update ( float val ) {
+	float out;
+
+	static float				integrator	= 0;
+	static float				prev_in		= 0;
+
+	integrator += val * scan.pid.ki * PERIOD_PID;
+	if ( integrator > scan.pid.iMax ) {
+		integrator = scan.pid.iMax;
+	}
+	if ( integrator < scan.pid.iMin ) {
+		integrator = scan.pid.iMin;
+	}
+	if ( std::isnan(integrator) || std::isinf(integrator) ) {
+		//некорректная ситуация! Сбрасываем в ноль в надежде восстановить работу
+		integrator = 0;
+	}
+	out = val * scan.pid.kp + integrator + (val - prev_in)*scan.pid.kd/PERIOD_PID;
+
+	prev_in = val;
+
+	out = out > scan.pid.outMax ? scan.pid.outMax : out;
+	out = out < scan.pid.outMin ? scan.pid.outMin : out;
+	return out;
+}
+
+__attribute__ ((section (".ramfunc")))
 void TIM2_IRQHandler ( void ) {
 	/// Сбрасываем прерывание от таймера.
-	scanTimInterruptObj.clearInterruptFlag();
+	TIM2->SR = 0;
 
 	/// Формируем сигнал сканирования (синусоида вокруг мнимой середины.
 	float floatOutPos ;
@@ -45,14 +80,15 @@ void TIM2_IRQHandler ( void ) {
 
 	if ( outPos > 0xFFF )	outPos = 0xFFF;
 
-	scanDacObj.setValue( scan.curAxis, outPos );
+	if ( !scan.curAxis ) {
+		DAC1->DHR12R1	=	outPos;
+	} else {
+		DAC1->DHR12R2	=	outPos;
+	}
 
 	/// Текущее значение с обратной связи в усреднятор.
 	uint32_t	adcValue;
-	adcValue	=	scanAdcObj.getMeasurement();
-
-	static pointAdc min;
-	static pointAdc max;
+	adcValue	=	ADC1->DR;
 
 	if ( scan.pointAdcMeasurementNow == 0 ) {
 		min.value = adcValue;
@@ -80,11 +116,12 @@ void TIM2_IRQHandler ( void ) {
 
 	scan.pointAdcMeasurementNow = 0;
 
-	if ( min.index > max.index ) {
-		scan.curPosCenCor[ scan.curAxis ] += scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
-	} else {
-		scan.curPosCenCor[ scan.curAxis ] -= scan.mb.RegMap_Table_1[ 513 ] * 3.3 / 4096;
+	float error = ( max.value - min.value ) * 3.3 / 4096.0;
+	if ( min.index > max.index  ) {
+		error *= -1;
 	}
+
+	scan.curPosCenCor[ scan.curAxis ] += pid_update( error );
 }
 
 
@@ -237,7 +274,13 @@ void USART1_IRQHandler ( void ) {
 	}
 }
 
+void CRYP_IRQHandler				( void ) {
+	NVIC_SystemReset();
+}
 
+void FPU_IRQHandler					( void ) {
+	NVIC_SystemReset();
+}
 
 
 }

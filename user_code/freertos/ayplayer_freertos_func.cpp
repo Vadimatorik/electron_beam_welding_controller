@@ -1,8 +1,7 @@
 #include <stdint.h>
-#include "stm32f2xx_hal_conf.h"
-#include "stm32f2xx_hal.h"
+#include "stm32f4xx_hal_conf.h"
+#include "stm32f4xx_hal.h"
 #include "timer.h"
-#include "FreeRTOSConfig.h"
 
 #ifdef configGENERATE_RUN_TIME_STATS
 extern TimCounter						timRunTimeStats;

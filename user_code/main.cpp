@@ -31,6 +31,14 @@ int main( void ) {
 		scan.mb.RegMap_Table_1[ i ] = 0;
 	}
 
+	scan.pid.iMax	=	0.05;
+	scan.pid.iMin	=	-0.05;
+	scan.pid.kp		=	0.005;
+	scan.pid.ki		=	0;
+	scan.pid.kd		=	0;
+	scan.pid.outMax			=	1;
+	scan.pid.outMin	=	-1;
+
 	while( 1 ) {
 		ModBusRTU_Slave_Service( &scan.mb.ModBusRTU_Slave );
 

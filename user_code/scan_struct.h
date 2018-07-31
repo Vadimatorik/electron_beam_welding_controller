@@ -6,6 +6,16 @@
 
 #define COUNT_ENCODER_TICK						50
 
+struct pidSyscfg {
+	float kp;
+	float ki;
+	float kd;
+	float iMax;
+	float iMin;
+	float outMax;
+	float outMin;
+};
+
 struct scanStruct {
 
 	/// 0 - ничего не происходит.
@@ -38,4 +48,6 @@ struct scanStruct {
 
 	/// ModBus.
 	scanModbus				mb;
+
+	pidSyscfg				pid;
 };

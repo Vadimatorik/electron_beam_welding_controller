@@ -3,7 +3,7 @@
 #include "timer.h"
 #include "pin.h"
 
-#include "stm32f205xx.h"
+#include "stm32f415xx.h"
 
 extern	Uart				scanUartObj;
 extern	TimInterrupt		scanModbusTimInterruptObj;

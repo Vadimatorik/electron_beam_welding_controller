@@ -1,6 +1,11 @@
 ﻿PROJECT_NAME		:= scanEl
 
-DEFINE_PROJ			:=	-DSTM32F205xx -DSTM32F2 -DSTM32
+DEFINE_PROJ			:=	-DSTM32F415xx
+DEFINE_PROJ			+=	-DSTM32F4
+DEFINE_PROJ			+=	-DSTM32
+#DEFINE_PROJ			+=	-DDEBUG
+DEFINE_PROJ			+=	-D__VFP_FP__
+DEFINE_PROJ			+=	-D__FPU_PRESENT
 
 DEFINE_PROJ			+=	-DMODULE_ARITHMETIC_MEAN_ENABLED
 DEFINE_PROJ			+=	-DMODULE_CPP_SYSTEM_CALLS_DUMMY_ENABLED
@@ -17,12 +22,16 @@ DEFINE_PROJ			+=	-DHAL_FLASH_MODULE_ENABLED
 DEFINE_PROJ			+=	-DHAL_CORTEX_MODULE_ENABLED
 DEFINE_PROJ			+=	-DHAL_MODULE_ENABLED
 
-CODE_OPTIMIZATION	:=	-Os -g0
+CODE_OPTIMIZATION	:=	-O0 -g3
 
-LD_FILES			= -T submodule/module_stm32f2_low_level_by_st/ld/STM32F205xB.ld
-STARTUPE_S_NAME		=  submodule/module_stm32f2_low_level_by_st/startupe/startup_stm32f205xx.s
+LD_FILES			=	-T submodule/module_stm32f4_low_level_by_st/ld/STM32F205xG.ld
+STARTUPE_S_NAME		=	submodule/module_stm32f4_low_level_by_st/startupe/startup_stm32f205xx.s
 
-MK_FLAGS			:= -mcpu=cortex-m3 -mthumb -mfloat-abi=soft --specs=nano.specs
+MK_FLAGS			:=	-mcpu=cortex-m4
+MK_FLAGS			+=	-mthumb
+MK_FLAGS			+=	-mfloat-abi=hard
+MK_FLAGS			+=	-mfpu=fpv4-sp-d16
+MK_FLAGS			+=	--specs=nano.specs	
 
 C_FLAGS				:= $(MK_FLAGS) 
 # Все предупреждения == ошибки.
@@ -36,21 +45,25 @@ C_FLAGS				+= -std=c99
 # хранить в себе всевозможные состояния этого enum-а (а не только текущее).
 C_FLAGS				+= -fshort-enums
 
-CPP_FLAGS			:= $(MK_FLAGS)     
-CPP_FLAGS			+= -Werror -Wall -Wextra
-CPP_FLAGS			+= -std=c++14
-CPP_FLAGS			+= -fno-exceptions
+CPP_FLAGS			:=	$(MK_FLAGS)
+CPP_FLAGS			+=	-Werror
+CPP_FLAGS			+=	-Wall
+CPP_FLAGS			+=	-Wextra
+CPP_FLAGS			+=	-std=c++14
+CPP_FLAGS			+=	-fno-exceptions
+CPP_FLAGS			+=	-fshort-enums	
 
-LDFLAGS				:= $(MK_FLAGS) $(LD_FILES) -fno-exceptions
+# Linker.
+LD_FILES			:=	-T submodule/module_stm32f4_low_level_by_st/LD/STM32F415RGTx_FLASH.ld
+STARTUPE_S_NAME		:=	submodule/module_stm32f4_low_level_by_st/startupe/startup_stm32f415xx.s
 
-# FreeRTOS.
-LDFLAGS				+= -Wl,--undefined=uxTopUsedPriority
-
-# Размещает каждую функцию в отдельной секции.
-LDFLAGS				+= -ffunction-sections -Wl,--gc-sections
+#Linker flags.
+LDFLAGS				:=	$(MK_FLAGS) $(LD_FILES) -fno-exceptions
+LDFLAGS				+=	-Wl,--undefined=uxTopUsedPriority			# FreeRTOS.
+LDFLAGS				+=	-ffunction-sections -Wl,--gc-sections
 
 # Формируем map файл.
-#LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
+LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
 
 #**********************************************************************
 # Параметры toolchain-а.

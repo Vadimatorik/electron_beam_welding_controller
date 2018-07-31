@@ -2,7 +2,7 @@
 #include "user_os.h"
 
 clkTimBaseCfg scanTimBaseCfg = {
-	.period			=	10000,
+	.period			=	14000,
 	.prescaler		=	0,
 	.pulse			=	0
 };
@@ -16,7 +16,7 @@ timInterruptCfg scanTimInterruptCfg = {
 TimInterrupt scanTimInterruptObj( &scanTimInterruptCfg );
 
 clkTimBaseCfg scanModbusTimBaseCfg = {
-	.period			=	31250,
+	.period			=	43750,
 	.prescaler		=	0,
 	.pulse			=	0
 };
