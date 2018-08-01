@@ -121,6 +121,8 @@ void TIM2_IRQHandler ( void ) {
 		error *= -1;
 	}
 
+	error *= scan.mb.RegMap_Table_1[ 518 ] / 1000.0;
+
 	scan.curPosCenCor[ scan.curAxis ] += pid_update( error );
 }
 

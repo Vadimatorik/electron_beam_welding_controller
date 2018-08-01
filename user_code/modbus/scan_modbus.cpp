@@ -10,7 +10,7 @@ void modbusInit ( void ) {
 										scan.mb.RegMap_Table_1,
 										ACCESS_REG_RW,
 										0,
-										1 + 512	+ 1 + 1 );
+										530 );
 
 	// Инициализирует карту таблиц регистров
 	ModBus_Slave_Init_Registers_Map_Table(	&scan.mb.ModBusRTU_Slave_RegistersMapTable,

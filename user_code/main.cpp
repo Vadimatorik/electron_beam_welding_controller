@@ -30,15 +30,7 @@ int main( void ) {
 	for ( int i = 1; i < 513; i++ ) {
 		scan.mb.RegMap_Table_1[ i ] = 0;
 	}
-
-	scan.pid.iMax	=	0.05;
-	scan.pid.iMin	=	-0.05;
-	scan.pid.kp		=	0.005;
-	scan.pid.ki		=	0;
-	scan.pid.kd		=	0;
-	scan.pid.outMax			=	1;
-	scan.pid.outMin	=	-1;
-
+	
 	while( 1 ) {
 		ModBusRTU_Slave_Service( &scan.mb.ModBusRTU_Slave );
 
@@ -47,10 +39,25 @@ int main( void ) {
 				scan.state	=	1;
 				/// Сброс энкодера.
 				scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
+
+				scan.curAxis	=	( scan.mb.RegMap_Table_1[0] & ( 1 << 12 ) ) >> 12;
+
+				scan.pid.kp		=	scan.mb.RegMap_Table_1[ 515 ] / 1000.0;
+				scan.pid.ki		=	scan.mb.RegMap_Table_1Сверху в[ 516 ] / 1000.0;
+				scan.pid.kd		=	scan.mb.RegMap_Table_1[ 517 ] / 1000.0;
+
+				scan.pid.iMax	=	scan.mb.RegMap_Table_1[ 519 ] / 1000.0;
+				scan.pid.iMax	=	( scan.mb.RegMap_Table_1[ 519 ] / 1000.0 ) * -1.0;
+
+				scan.pid.outMax	=	( scan.mb.RegMap_Table_1[ 520 ] / 1000.0 );
+				scan.pid.outMin	=	( scan.mb.RegMap_Table_1[ 520 ] / 1000.0 ) * -1.0;
+
 				scanTimInterruptObj.on();
 			}
 		}
 
-		scan.curAxis	=	( scan.mb.RegMap_Table_1[0] & ( 1 << 12 ) ) >> 12;
+		
+
+
 	}
 }
