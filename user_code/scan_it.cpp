@@ -117,37 +117,21 @@ void TIM2_IRQHandler ( void ) {
 	scan.pointAdcMeasurementNow = 0;
 
 	float error = ( max.value - min.value ) * 3.3 / 4096.0;
-	if ( min.index > max.index  ) {
-		error *= -1;
+
+	if ( scan.mb.RegMap_Table_1[ 513 ] ) {
+		if ( min.index > max.index  ) {
+			error *= -1;
+		}
+	} else {
+		if ( min.index < max.index  ) {
+			error *= -1;
+		}
 	}
 
-	error *= scan.mb.RegMap_Table_1[ 518 ] / 1000.0;
+	error *= scan.mb.RegMap_Table_1[ 518 ] / 10000.0;
 
 	scan.curPosCenCor[ scan.curAxis ] += pid_update( error );
 }
-
-
-void setPosAxis ( void ) {
-	//uint16_t outPos = 4096.0 / 3.3 * scan.axisPos[ scan.encoderTickNow ];
-	//scanDacObj.setValue( scan.curAxis, outPos );
-}
-///	if ( ( ( GPIOA->ODR & ( 1 << 2 ) ) == 0 ) ) {
-
-/*
-	/// Если идет сканирование.
-	if ( scan.flagTypeJob == 0 ) {
-		scan.axisPos[ scan.encoderTickNow ] = scan.curPosCenCor[ scan.curAxis ];
-		scan.encoderTickNow++;
-		if ( scan.encoderTickNow == COUNT_ENCODER_TICK ) {
-			scan.encoderTickNow = 0;
-			scan.flagTypeJob = 1;
-			scanTimInterruptObj.off();
-			setPosAxis();
-		}
-	} else {
-		scan.encoderTickNow++;
-		setPosAxis();
-	}*/
 
 static int psevDoEnc = 0;
 
@@ -161,7 +145,13 @@ void inc_encoder ( void ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
 		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * scan.curPosCenCor[ scan.curAxis ];
-	}
+	} else {
+			if ( !scan.curAxis ) {
+					DAC1->DHR12R1	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];
+				} else {
+					DAC1->DHR12R2	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];
+				}
+		}
 
 	encoderTick	+=	1;
 	encoderTick	&=	0b111111111;
@@ -177,18 +167,21 @@ void inc_encoder ( void ) {
 	}
 }
 
+
+#define ENCODER_POINTS			500
 __attribute__ ((section (".ramfunc")))
 void dec_encoder ( void ) {
 	int32_t	encoderTick;
 	encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
 	encoderTick	&=	0b111111111;
 	encoderTick	-=	1;
-
+	scanTimInterruptObj.on();
 	if ( encoderTick < 0 ) {
-		encoderTick	=	511;
+		encoderTick	=	ENCODER_POINTS - 1;
 		if ( scan.state == 1 ) {
 			scan.state = 0;
 			scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
+			scanTimInterruptObj.off();
 		}
 	}
 
@@ -196,6 +189,12 @@ void dec_encoder ( void ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
 		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+	} else {
+		if ( !scan.curAxis ) {
+				DAC1->DHR12R1	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];
+			} else {
+				DAC1->DHR12R2	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];
+			}
 	}
 }
 
@@ -231,12 +230,6 @@ void EXTI3_IRQHandler ( void ) {
 									psevDoEnc = 0;
 									inc_encoder();
 								}
-
-
-
-
-
-
 	}
 }
 

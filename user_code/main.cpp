@@ -42,15 +42,15 @@ int main( void ) {
 
 				scan.curAxis	=	( scan.mb.RegMap_Table_1[0] & ( 1 << 12 ) ) >> 12;
 
-				scan.pid.kp		=	scan.mb.RegMap_Table_1[ 515 ] / 1000.0;
-				scan.pid.ki		=	scan.mb.RegMap_Table_1Сверху в[ 516 ] / 1000.0;
-				scan.pid.kd		=	scan.mb.RegMap_Table_1[ 517 ] / 1000.0;
+				scan.pid.kp		=	scan.mb.RegMap_Table_1[ 515 ] / 10000.0;
+				scan.pid.ki		=	scan.mb.RegMap_Table_1[ 516 ] / 10000.0;
+				scan.pid.kd		=	scan.mb.RegMap_Table_1[ 517 ] / 10000.0;
 
-				scan.pid.iMax	=	scan.mb.RegMap_Table_1[ 519 ] / 1000.0;
-				scan.pid.iMax	=	( scan.mb.RegMap_Table_1[ 519 ] / 1000.0 ) * -1.0;
+				scan.pid.iMax	=	scan.mb.RegMap_Table_1[ 519 ] / 10000.0;
+				scan.pid.iMin	=	( scan.mb.RegMap_Table_1[ 519 ] / 10000.0 ) * -1.0;
 
-				scan.pid.outMax	=	( scan.mb.RegMap_Table_1[ 520 ] / 1000.0 );
-				scan.pid.outMin	=	( scan.mb.RegMap_Table_1[ 520 ] / 1000.0 ) * -1.0;
+				scan.pid.outMax	=	( scan.mb.RegMap_Table_1[ 520 ] / 10000.0 );
+				scan.pid.outMin	=	( scan.mb.RegMap_Table_1[ 520 ] / 10000.0 ) * -1.0;
 
 				scanTimInterruptObj.on();
 			}
