@@ -168,14 +168,14 @@ void inc_encoder ( void ) {
 }
 
 
+
 #define ENCODER_POINTS			500
 __attribute__ ((section (".ramfunc")))
 void dec_encoder ( void ) {
 	int32_t	encoderTick;
 	encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
 	encoderTick	&=	0b111111111;
-	encoderTick	-=	1;
-	scanTimInterruptObj.on();
+
 	if ( encoderTick < 0 ) {
 		encoderTick	=	ENCODER_POINTS - 1;
 		if ( scan.state == 1 ) {
@@ -184,6 +184,12 @@ void dec_encoder ( void ) {
 			scanTimInterruptObj.off();
 		}
 	}
+
+	encoderTick	-=	1;
+	encoderTick	&=	0b111111111;
+
+	scan.mb.RegMap_Table_1[ 0 ] &= ~0b111111111;
+		scan.mb.RegMap_Table_1[ 0 ] |= encoderTick;
 
 	if ( scan.state == 1 ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
@@ -198,38 +204,24 @@ void dec_encoder ( void ) {
 	}
 }
 
+
 __attribute__ ((section (".ramfunc")))
 void EXTI2_IRQHandler ( void ) {
+	uint32_t reg = GPIOA->IDR;
 	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_2 );
 
-	if ( ( ( GPIOA->IDR & ( 1 << 3 ) ) == 0 ) ) {
+	if ( ( ( reg & ( 1 << 3 ) ) != 0 ) ) {
 		psevDoEnc--;
-							if ( psevDoEnc < 0 ) {
-								psevDoEnc = 17;
-								dec_encoder();
-							}
-
-	}
-
-}
-
-#include <cmath>
-
-
-
-
-__attribute__ ((section (".ramfunc")))
-void EXTI3_IRQHandler ( void ) {
-	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_3 );
-
-
-	if ( ( ( GPIOA->IDR & ( 1 << 2 ) ) == 0 ) ) {
-
+		if ( psevDoEnc < 0 ) {
+			psevDoEnc = 17;
+			dec_encoder();
+		}
+	} else {
 		psevDoEnc++;
-								if ( psevDoEnc == 18 ) {
-									psevDoEnc = 0;
-									inc_encoder();
-								}
+		if ( psevDoEnc > 17 ) {
+			psevDoEnc = 0;
+			inc_encoder();
+		}
 	}
 }
 

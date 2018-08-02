@@ -41,11 +41,6 @@ struct scanStruct {
 	/// Текущий этап усреднения.
 	uint32_t				nowIterationAveraging;
 
-	/// Массив точек энкодера на активной оси.
-	float					axisPos[ COUNT_ENCODER_TICK ];
-
-
-
 	/// ModBus.
 	scanModbus				mb;
 

@@ -7,7 +7,7 @@ extern scanStruct	scan;
 void modbusInit ( void ) {
 	// Инициализировать таблицу регистров #1
 	ModBus_Slave_Init_Registers_Table(	&scan.mb.ModBusRTU_Slave_RegistersTable[0],
-										scan.mb.RegMap_Table_1,
+										( uint16_t* )scan.mb.RegMap_Table_1,
 										ACCESS_REG_RW,
 										0,
 										530 );
