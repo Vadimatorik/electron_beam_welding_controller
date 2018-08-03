@@ -163,6 +163,7 @@ void inc_encoder ( void ) {
 		if ( scan.state == 1 ) {
 			scan.state = 0;
 			scan.mb.RegMap_Table_1[0] &= ~( 1 << 13 );
+			scanTimInterruptObj.off();
 		}
 	}
 }

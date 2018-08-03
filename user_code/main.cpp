@@ -28,7 +28,7 @@ int main( void ) {
 	scan.mb.RegMap_Table_1[0] = 0;
 
 	for ( int i = 1; i < 513; i++ ) {
-		scan.mb.RegMap_Table_1[ i ] = 4096.0 / 512.0 * i;
+		scan.mb.RegMap_Table_1[ i ] = 0;
 	}
 	
 	while( 1 ) {
