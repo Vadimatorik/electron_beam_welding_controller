@@ -37,7 +37,7 @@ static pointAdc max;
 
 extern filtration				filter;
 
-#define PERIOD_PID					1.0 / 300.0
+
 
 __attribute__ ((section (".ramfunc")))
 float pid_update ( float val ) {
@@ -139,11 +139,28 @@ void TIM2_IRQHandler ( void ) {
 
 static int psevDoEnc = 0;
 
+/*!
+ * Мне выставляют бит, когда типа началась сварка.
+ * Через ENCODER_POINTS точек, колличество которых закладывается при сканировании
+ * в  scan.downCounterEncoder я должен сбросить этот бит.
+ * Если бит и так сброшен, пропускаем.
+ */
+void checkStopSv ( void ) {
+	if ( scan.mb.RegMap_Table_1[ 0 ] & SV_START ) {
+			scan.downCounterEncoder--;
+			if ( scan.downCounterEncoder == 0 ) {
+				scan.mb.RegMap_Table_1[ 0 ] &= ~SV_START;
+			}
+		}
+}
+
 __attribute__ ((section (".ramfunc")))
 void inc_encoder ( void ) {
 	uint32_t	encoderTick;
 	encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
 	encoderTick	&=	0b111111111;
+
+	checkStopSv();
 
 	if ( scan.state == 1 ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
@@ -174,12 +191,14 @@ void inc_encoder ( void ) {
 
 
 
-#define ENCODER_POINTS			500
+
 __attribute__ ((section (".ramfunc")))
 void dec_encoder ( void ) {
 	int32_t	encoderTick;
 	encoderTick	=	scan.mb.RegMap_Table_1[ 0 ];
 	encoderTick	&=	0b111111111;
+
+	checkStopSv();
 
 	if ( encoderTick < 0 ) {
 		encoderTick	=	ENCODER_POINTS - 1;

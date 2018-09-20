@@ -5,7 +5,10 @@
 #include <stdint.h>
 #include "filtration_cpp.h"
 
-#define COUNT_ENCODER_TICK						50
+#define COUNT_ENCODER_TICK		50
+#define PERIOD_PID				1.0 / 300.0
+#define ENCODER_POINTS			500
+#define	SV_START				(1 << 15)
 
 struct pidSyscfg {
 	float kp;
@@ -48,4 +51,6 @@ struct scanStruct {
 	scanModbus				mb;
 
 	pidSyscfg				pid;
+
+	uint32_t				downCounterEncoder;
 };
