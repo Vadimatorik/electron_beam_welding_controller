@@ -148,7 +148,7 @@ void inc_encoder ( void ) {
 	if ( scan.state == 1 ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
-		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * filter.getValue();;
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * filter.getValue();
 	} else {
 			if ( !scan.curAxis ) {
 					DAC1->DHR12R1	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];
@@ -199,7 +199,7 @@ void dec_encoder ( void ) {
 	if ( scan.state == 1 ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
-		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	filter.getValue();
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * filter.getValue();
 	} else {
 		if ( !scan.curAxis ) {
 				DAC1->DHR12R1	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];

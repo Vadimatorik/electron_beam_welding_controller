@@ -10,6 +10,11 @@ filtration::~filtration() {
 	delete this->buf;
 }
 
+void filtration::reset ( void ) {
+	this->samples_count		=	0;
+	this->samples_current	=	0;
+}
+
 void filtration::addValue (	float	val	) {
 	this->buf[this->samples_current] = val;
 		this->samples_current++;
@@ -26,10 +31,10 @@ float filtration::getValue ( void ) {
 	float avg = 0;
 
 	for (uint32_t i=0; i<this->samples_count; i++) {
-			avg +=  this->buf[i];
-		}
+		avg +=  this->buf[i];
+	}
 
-		return avg / this->samples_count;
+	return avg / this->samples_count;
 }
 
 

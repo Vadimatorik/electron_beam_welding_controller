@@ -54,6 +54,8 @@ int main( void ) {
 				scan.pid.outMax	=	( scan.mb.RegMap_Table_1[ 520 ] / 10000.0 );
 				scan.pid.outMin	=	( scan.mb.RegMap_Table_1[ 520 ] / 10000.0 ) * -1.0;
 
+				filter.reset();
+
 				scanTimInterruptObj.on();
 			}
 		}

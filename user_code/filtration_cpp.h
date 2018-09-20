@@ -13,6 +13,8 @@ public:
 	float			getValue		(	void	);
 
 	float			avg_calc		( float val );
+
+	void			reset			(	void	);
 	~filtration();
 
 private:
