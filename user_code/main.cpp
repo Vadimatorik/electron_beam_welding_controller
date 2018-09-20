@@ -1,7 +1,9 @@
 #include "scan_hardware.h"
 #include "scan_struct.h"
 
-scanStruct	scan;
+scanStruct				scan;
+float filterBuffer[ 50 ] = { 0 };
+filtration				filter( filterBuffer, 50 );
 
 #include "dac.h"
 

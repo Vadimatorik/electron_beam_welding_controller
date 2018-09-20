@@ -35,6 +35,8 @@ static pointAdc min;
 __attribute__ ((section ("data")))
 static pointAdc max;
 
+extern filtration				filter;
+
 #define PERIOD_PID					1.0 / 300.0
 
 __attribute__ ((section (".ramfunc")))
@@ -130,7 +132,9 @@ void TIM2_IRQHandler ( void ) {
 
 	error *= scan.mb.RegMap_Table_1[ 518 ] / 10000.0;
 
-	scan.curPosCenCor[ scan.curAxis ] += pid_update( error );
+	scan.curPosCenCor[ scan.curAxis ] = pid_update( error ) + 1.65;
+
+	filter.addValue( scan.curPosCenCor[ scan.curAxis ] );
 }
 
 static int psevDoEnc = 0;
@@ -144,7 +148,7 @@ void inc_encoder ( void ) {
 	if ( scan.state == 1 ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
-		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * scan.curPosCenCor[ scan.curAxis ];
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	4096.0 / 3.3 * filter.getValue();;
 	} else {
 			if ( !scan.curAxis ) {
 					DAC1->DHR12R1	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];
@@ -195,7 +199,7 @@ void dec_encoder ( void ) {
 	if ( scan.state == 1 ) {
 		scan.mb.RegMap_Table_1[ 0 ]	&=	~0b111111111;
 		scan.mb.RegMap_Table_1[ 0 ]	|=	encoderTick;
-		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	scan.curPosCenCor[ scan.curAxis ];
+		scan.mb.RegMap_Table_1[ encoderTick + 1 ]	=	filter.getValue();
 	} else {
 		if ( !scan.curAxis ) {
 				DAC1->DHR12R1	=	scan.mb.RegMap_Table_1[ encoderTick + 1 ];

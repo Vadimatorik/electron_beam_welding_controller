@@ -3,6 +3,7 @@
 #include "arithmetic_mean.h"
 #include "scan_modbus.h"
 #include <stdint.h>
+#include "filtration_cpp.h"
 
 #define COUNT_ENCODER_TICK						50
 
@@ -28,6 +29,8 @@ struct scanStruct {
 
 	/// Текущее положение центра оси X и Y координат.
 	float					curPosCenCor[2];
+
+	float					curPosCenCorFilter[2];
 
 	uint32_t				pointAdcMeasurementNow;
 	int32_t					pos;
