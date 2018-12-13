@@ -135,9 +135,7 @@ void TIM2_IRQHandler ( void ) {
 	scan.curPosCenCor[ scan.curAxis ] = pid_update( error ) + 1.65;
 
 	filter.addValue( scan.curPosCenCor[ scan.curAxis ] );
-}
-
-static int psevDoEnc = 0;
+};
 
 /*!
  * Мне выставляют бит, когда типа началась сварка.
@@ -235,17 +233,9 @@ void EXTI2_IRQHandler ( void ) {
 	__HAL_GPIO_EXTI_CLEAR_IT( GPIO_PIN_2 );
 
 	if ( ( ( reg & ( 1 << 3 ) ) != 0 ) ) {
-		psevDoEnc--;
-		if ( psevDoEnc < 0 ) {
-			psevDoEnc = 17;
-			dec_encoder();
-		}
+		dec_encoder();
 	} else {
-		psevDoEnc++;
-		if ( psevDoEnc > 17 ) {
-			psevDoEnc = 0;
-			inc_encoder();
-		}
+		inc_encoder();
 	}
 }
 
